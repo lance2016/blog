@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
+    //通过用户名查询
     @Override
     public User getUserByUsername(String username) {
         UserExample example = new UserExample();
@@ -44,9 +45,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUsername(username);
     }
 
+    //添加用户
     @Override
     public int addUser(User user) {
-        return 0;
+        return userMapper.insert(user);
     }
 
     @Override

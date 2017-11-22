@@ -1,6 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,30 +21,86 @@
 
     <!--styles-->
     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <link href="css/owl.carousel.css" rel="stylesheet">
-    <link href="css/owl.theme.css" rel="stylesheet">
-    <link href="css/magnific-popup.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="<%=basePath%>css/owl.carousel.css" rel="stylesheet">
+    <link href="<%=basePath%>css/owl.theme.css" rel="stylesheet">
+    <link href="<%=basePath%>css/magnific-popup.css" rel="stylesheet">
+    <link href="<%=basePath%>css/style.css" rel="stylesheet">
+    <link href="<%=basePath%>css/responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--fonts google-->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
 
+
+    <!--alert css-->
+
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.default.css">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.core.css">
     <!--gallery-->
-    <link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css">
-    <link rel="stylesheet" href="css/baguetteBox.min.css">
-    <link rel="stylesheet" href="css/thumbnail-gallery.css">
-    <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/htmleaf-demo.css">
+    <link rel="stylesheet" href="<%=basePath%>css/baguetteBox.min.css">
+    <link rel="stylesheet" href="<%=basePath%>css/thumbnail-gallery.css">
+    <script src="<%=basePath%>js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>js/html5shiv.min.js"></script>
     <![endif]-->
+
+
+
+    <script type="text/javascript">
+
+        //清空输入
+        function clearInput(){
+            $("#username").val("");
+            $("#password").val("");
+        }
+
+        //登录
+        function ajaxTest(){
+            var data = {
+                'username':$("#username").val(),
+                'password':$("#password").val()};
+            $.ajax({
+                type:"POST",
+                url:"${pageContext.request.contextPath}/user/login",
+                dataType:"json",
+                //contentType:"application/json", //不能添加这个头
+                data:data, //这里不能进行JSON.stringify,发送请求的数据在:form data
+                beforeSend: function () {
+                    // 禁用按钮防止重复提交
+                    $("#btn").attr({ disabled: "disabled" });
+                },
+                success:function(data){
+                   if(data=="1"){
+                       //跳转页面
+                       clearInput();
+                       alertify.success("登陆成功");
+                       setTimeout(function () {
+                           window.location.href="${pageContext.request.contextPath}/user/admin";
+                           },
+                           500);
+
+                   }
+                   else{
+                       alertify.error("用户名或密码错误");
+                   }
+
+                }, complete: function () {
+                    $("#btn").removeAttr("disabled");
+                },
+                error: function (data) {
+                    console.info("error: " + data.responseText);
+                }
+            });
+        }
+    </script>
+
 </head>
 <body>
 <!--PRELOADER-->
 <div id="preloader">
     <div id="status">
-        <img alt="logo" src="images/logo-big.png">
+        <img alt="logo" src="<%=basePath%>images/logo-big.png">
     </div>
 </div>
 <!--/.PRELOADER END-->
@@ -50,7 +110,7 @@
     <div class="for-sticky">
         <!--LOGO-->
         <div class="col-md-2 col-xs-6 logo">
-            <a href="#"><img alt="logo" class="logo-nav" src="images/logo.png" ></a>
+            <a href="<%=basePath%>user/index"><img alt="logo" class="logo-nav" src="<%=basePath%>images/logo.png" ></a>
         </div>
         <!--/.LOGO END-->
         <!--log in-->
@@ -137,7 +197,7 @@
                         <div class="grid">
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog-1" class="img-circle text-center" src="images/blog-1.png">
+                                    <img alt="blog-1" class="img-circle text-center" src="<%=basePath%>images/blog-1.png">
                                     <p class="subtitle fancy">
                                         <span>09/01/2015</span>
                                     </p>
@@ -154,7 +214,7 @@
 
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog-4" class="img-circle text-center" src="images/blog-4.jpg">
+                                    <img alt="blog-4" class="img-circle text-center" src="<%=basePath%>images/blog-4.jpg">
                                     <p class="subtitle fancy">
                                         <span>08/20/2015</span>
                                     </p>
@@ -171,7 +231,7 @@
 
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog6" class="img-circle text-center" src="images/blog-6.jpg">
+                                    <img alt="blog6" class="img-circle text-center" src="<%=basePath%>images/blog-6.jpg">
                                     <p class="subtitle fancy">
                                         <span>08/11/2015</span>
                                     </p>
@@ -188,7 +248,7 @@
 
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog2" class="img-circle text-center" src="images/blog-2.jpg">
+                                    <img alt="blog2" class="img-circle text-center" src="<%=basePath%>images/blog-2.jpg">
                                     <p class="subtitle fancy">
                                         <span>08/03/2015</span>
                                     </p>
@@ -205,7 +265,7 @@
 
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog5" class="img-circle text-center" src="images/blog-5.jpg">
+                                    <img alt="blog5" class="img-circle text-center" src="<%=basePath%>images/blog-5.jpg">
                                     <p class="subtitle fancy">
                                         <span>07/26/2015</span>
                                     </p>
@@ -222,7 +282,7 @@
 
                             <div class="grid-item">
                                 <div class="wrap-article">
-                                    <img alt="blog-3" class="img-circle text-center" src="images/blog-3.jpg">
+                                    <img alt="blog-3" class="img-circle text-center" src="<%=basePath%>images/blog-3.jpg">
                                     <p class="subtitle fancy">
                                         <span>08/03/2015</span>
                                     </p>
@@ -272,7 +332,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/park.jpg">
-                                    <img src="images/park.jpg" alt="Park">
+                                    <img src="<%=basePath%>images/park.jpg" alt="Park">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -283,7 +343,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/bridge.jpg">
-                                    <img src="images/bridge.jpg" alt="Bridge">
+                                    <img src="<%=basePath%>images/bridge.jpg" alt="Bridge">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -294,7 +354,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/tunnel.jpg">
-                                    <img src="images/tunnel.jpg" alt="Tunnel">
+                                    <img src="<%=basePath%>images/tunnel.jpg" alt="Tunnel">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -305,7 +365,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/coast.jpg">
-                                    <img src="images/coast.jpg" alt="Coast">
+                                    <img src="<%=basePath%>images/coast.jpg" alt="Coast">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -316,7 +376,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/rails.jpg">
-                                    <img src="images/rails.jpg" alt="Rails">
+                                    <img src="<%=basePath%>images/rails.jpg" alt="Rails">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -327,7 +387,7 @@
                         <div class="col-sm-6 col-md-4">
                             <div class="thumbnail">
                                 <a class="lightbox" href="images/traffic.jpg">
-                                    <img src="images/traffic.jpg" alt="Traffic">
+                                    <img src="<%=basePath%>images/traffic.jpg" alt="Traffic">
                                 </a>
                                 <div class="caption">
                                     <h3>Thumbnail label</h3>
@@ -397,7 +457,7 @@
             <div class="white-bg" >
                 <div class="container">
 
-                    <a href="javascript:alert('欢迎访问我的博客');"> <img src="images/lance.png" width="120px" alt="logo bottom" class="center-block" /></a>
+                    <a href="javascript:alert('欢迎访问我的博客');"> <img src="<%=basePath%>images/lance.png" width="120px" alt="logo bottom" class="center-block" /></a>
 
                 </div>
             </div>
@@ -436,7 +496,7 @@
                 <%--<input type="submit" value="登陆">--%>
                 <%--</form:form>--%>
 
-                <form role="form" action="user/login" method="post"  >
+
 
                     <div class="form-group">
 
@@ -449,8 +509,8 @@
                         <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
                     </div>
 
-                    <button type="submit" class="btn btn-default pull-right btn-success">登录</button>
-                </form>
+                    <button type="submit" id="btn" onclick="ajaxTest();" class="btn btn-default pull-right btn-success">登录</button>
+
             </div>
 
         </div><!-- /.modal-content -->
@@ -458,28 +518,31 @@
 </div>
 
 
-
-<script type="text/javascript" src="js/baguetteBox.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/baguetteBox.min.js"></script>
 <script type="text/javascript">
     baguetteBox.run('.tz-gallery');
 
     //模态框消失后清空表单内容
     $(function () { $('#myModal').on('hide.bs.modal', function () {
-        $("#username").val("");
-        $("#password").val("");
+            clearInput();
         });
     });
+
+
+
+
 </script>
 
-<script src="js/jquery.appear.js" type="text/javascript"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
-<script src="js/classie.js" type="text/javascript"></script>
-<script src="js/owl.carousel.min.js" type="text/javascript"></script>
-<script src="js/jquery.magnific-popup.min.js" type="text/javascript"></script>
-<script src="js/masonry.pkgd.min.js" type="text/javascript"></script>
-<script src="js/masonry.js" type="text/javascript"></script>
-<script src="js/smooth-scroll.min.js" type="text/javascript"></script>
-<script src="js/typed.js" type="text/javascript"></script>
-<script src="js/main.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/jquery.appear.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/classie.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/owl.carousel.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/jquery.magnific-popup.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/masonry.pkgd.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/masonry.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/smooth-scroll.min.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/typed.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/main.js" type="text/javascript"></script>
+<script src="<%=basePath%>js/alertify.min.js" type="text/javascript"></script><!--alertify提醒-->
 </body>
 </html>

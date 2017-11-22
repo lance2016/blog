@@ -1,0 +1,11 @@
+a:focus,a:link {
+    color:purple;
+}
+
+.widget-menu{
+    background: red;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+}
