@@ -16,7 +16,7 @@
 </head>
 <body>
 <%User user= (User) session.getAttribute("account"); %>
-<nav class="navbar navbar-default navbar-static-top" >
+<nav class="navbar navbar-default navbar-static-top container" >
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="<%=basePath%>">Lance's Blog</a>

@@ -10,8 +10,6 @@ import com.lance.bean.User;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import java.io.PrintWriter;
-
 public class LoginInterceptor extends HandlerInterceptorAdapter{
     /**
      * 在业务处理器处理请求之前被调用

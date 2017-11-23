@@ -2,7 +2,6 @@ package com.lance.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 

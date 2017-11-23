@@ -22,27 +22,30 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.core.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.default.css">
 
+    <style>
+        .container{
+            padding: 0px;
+        }
+    </style>
     <%--<link rel="stylesheet" type="text/css" href="<%=basePath%>css/bgcss.css">--%>
-
-
 </head>
-<body style="height: 100%">
+<body style="background-color: #ffffff">
 <%User user= (User) session.getAttribute("account");%>
-<div class="container" >
+<div class="container" style="background-color:#f8f8f8"; >
     <!--导航栏-->
-    <div class="col-md-12" id="topBar">
+    <div class="container" id="topBar" >
 
     </div>
 
-    <div class="col-md-12" style="padding: 10px;">
+    <div class="container" id="con" style="padding: 5px">
 
         <!--侧边栏-->
-       <div id="left" class="col-md-2">
+       <div id="left" class="col-md-2" >
            侧边栏加载在这里
        </div>
 
         <!--加载页面-->
-        <div class="col-md-8 col-md-offset-1" id="right"  >
+        <div class="col-md-10 " id="right" >
 
             加载在这里
 
@@ -60,6 +63,8 @@
         load("topBar","#topBar");//顶部导航栏
         load("userSidebar","#left");//左侧导航栏
         listAllUsers();//右侧内容,默认显示所有成员
+        $("#con").height(document.documentElement.clientHeight-85);
+
     });
 
 
@@ -99,14 +104,17 @@
 
     //  获取查询到的全部用户，并拼接显示
     function listAllUsers() {
+        var state=new Array(4);
+        state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
         $.ajax({
             type:"POST",
             url:"<%=basePath%>user/getAllUsers",
             dataType:"json",
             success:function(data){
+
                 var user="<table class='table table-striped text-center'> <caption>所有用户</caption> <thead> <tr> <th class='col-md-2 text-center'>Id</th> <th class='col-md-2 text-center'>账号</th> <th class='col-md-2 text-center'>昵称</th> <th class='col-md-4 text-center'>访问时间</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>修改</th> </tr> </thead> <tbody>";
                 $.each( data, function(index, content){
-                    user=user+"<tr><td>"+content['id']+"</td><td>"+content['username']+"</td><td>"+content['nickname']+"</td><td>"+content["visittime"]+"</td><td><a href='#' onclick='deleteUser("+content['id']+")'>删除</a></td><td><a href='#' onclick='getUser("+content['id']+")'>修改</a> </td></tr>";
+                    user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['username']+"</td><td>"+content['nickname']+"</td><td>"+content["visittime"]+"</td><td><a href='#' onclick='deleteUser("+content['id']+")'>删除</a></td><td><a href='#' onclick='getUser("+content['id']+")'>修改</a> </td></tr>";
 
                     //alert( "item #" + index + " its value is: " + content["id"] );
                 });
@@ -183,7 +191,6 @@
 
 
     }
-
 
 
 

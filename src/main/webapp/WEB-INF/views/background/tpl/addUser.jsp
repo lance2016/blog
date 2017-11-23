@@ -70,6 +70,11 @@
             });
         }
     </script>
+    <style>
+        .container{
+            padding: 0px;
+        }
+    </style>
 </head>
 <body>
 
