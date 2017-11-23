@@ -106,6 +106,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
+
+
   <insert id="insert" parameterType="com.lance.bean.User">
     insert into user (Id, username, password, 
       authority, nickname, visittime

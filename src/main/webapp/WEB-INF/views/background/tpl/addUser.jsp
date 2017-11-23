@@ -25,16 +25,18 @@
             $("#username").val("");
             $("#nickname").val("");
             $("#password").val("");
+            $("#password2").val("");
         }
         //增加用户
         function addUser(){
             var data = {
                 'username':$("#username").val(),
                 'nickname':$("#nickname").val(),
-                'password':$("#password").val()};
+                'password':$("#password").val(),
+                'password2':$("#password2").val()};
             $.ajax({
                 type:"POST",
-                url:"${pageContext.request.contextPath}/user/addUser",
+                url:"<%=basePath%>user/addUser",
                 dataType:"json",
                 //contentType:"application/json", //不能添加这个头
                 data:data, //这里不能进行JSON.stringify,发送请求的数据在:form data
@@ -48,9 +50,15 @@
                         $("#username").val("");
                         $("#nickname").val("");
                         $("#password").val("");
+                        $("#password2").val("");
                     }
-                    else{
-                        alertify.error("添加失败");
+                    else if(data==0){
+                        alertify.error("请完善信息");
+                    }
+                    else if(data==-1){
+                        alertify.error("账号已存在");
+                    }else if(data==-2){
+                        alertify.error("两次密码不一致");
                     }
 
                 }, complete: function () {
@@ -65,7 +73,7 @@
 </head>
 <body>
 
-<form role="form" >
+<form role="form" class="col-md-10 col-md-offset-1">
     <div class="form-group">
         <label for="username">用户名</label>
         <input type="text" class="form-control" id="username" name="username"
@@ -84,9 +92,15 @@
                placeholder="请输入密码">
     </div>
 
+    <div class="form-group">
+        <label for="password2">确认密码</label>
+        <input type="password" class="form-control" id="password2" name="password2"
+               placeholder="请确认密码">
+    </div>
 
 
-    <%--<div class="form-group">--%>
+
+<%--<div class="form-group">--%>
         <%--<label for="password">确认密码</label>--%>
         <%--<input type="text" class="form-control" id="password" name="password"--%>
                <%--placeholder="请输入密码">--%>

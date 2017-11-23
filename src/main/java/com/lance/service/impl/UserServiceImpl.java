@@ -19,9 +19,11 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     public List<User> getAllUsers() {
-        return null;
+        UserExample example = new UserExample();
+        return userMapper.selectByExample(example);
     }
 
+    //通过用户id查询
     @Override
     public User getUserById(Integer id) {
         UserExample example = new UserExample();
@@ -52,13 +54,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(User user) {
-        return 0;
+    public int deleteUserById(Integer id) {
+
+        return userMapper.deleteByPrimaryKey(id);
     }
+
 
     @Override
     public int updateUser(User user) {
-        return 0;
+
+        return userMapper.updateByPrimaryKey(user);
     }
 
 

@@ -136,6 +136,9 @@
                 <a data-scroll="" href="#contact">
                     <span>Contact</span>
                 </a>
+                <a data-scroll="" href="<%=basePath%>user/admin">
+                    <span>Background</span>
+                </a>
 
 
             </div>
