@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lance.dao.mapper.BlogsMapper">
+  <resultMap id="BaseResultMap" type="com.lance.bean.Blogs">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="blog_name" jdbcType="VARCHAR" property="blogName" />
+    <result column="img_name" jdbcType="VARCHAR" property="imgName" />
+    <result column="blog_content" jdbcType="VARCHAR" property="blogContent" />
+    <result column="create_data" jdbcType="VARCHAR" property="createData" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="deleted" jdbcType="VARCHAR" property="deleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Id, blog_name, img_name, blog_content, create_data, author, deleted
+  </sql>
+  <select id="selectByExample" parameterType="com.lance.bean.BlogsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blogs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blogs
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from blogs
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lance.bean.BlogsExample">
+    delete from blogs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lance.bean.Blogs">
+    insert into blogs (Id, blog_name, img_name, 
+      blog_content, create_data, author, 
+      deleted)
+    values (#{id,jdbcType=INTEGER}, #{blogName,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, 
+      #{blogContent,jdbcType=VARCHAR}, #{createData,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lance.bean.Blogs">
+    insert into blogs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="blogName != null">
+        blog_name,
+      </if>
+      <if test="imgName != null">
+        img_name,
+      </if>
+      <if test="blogContent != null">
+        blog_content,
+      </if>
+      <if test="createData != null">
+        create_data,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="blogName != null">
+        #{blogName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgName != null">
+        #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="blogContent != null">
+        #{blogContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createData != null">
+        #{createData,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lance.bean.BlogsExample" resultType="java.lang.Long">
+    select count(*) from blogs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update blogs
+    <set>
+      <if test="record.id != null">
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.blogName != null">
+        blog_name = #{record.blogName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgName != null">
+        img_name = #{record.imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogContent != null">
+        blog_content = #{record.blogContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createData != null">
+        create_data = #{record.createData,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update blogs
+    set Id = #{record.id,jdbcType=INTEGER},
+      blog_name = #{record.blogName,jdbcType=VARCHAR},
+      img_name = #{record.imgName,jdbcType=VARCHAR},
+      blog_content = #{record.blogContent,jdbcType=VARCHAR},
+      create_data = #{record.createData,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      deleted = #{record.deleted,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lance.bean.Blogs">
+    update blogs
+    <set>
+      <if test="blogName != null">
+        blog_name = #{blogName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgName != null">
+        img_name = #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="blogContent != null">
+        blog_content = #{blogContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createData != null">
+        create_data = #{createData,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lance.bean.Blogs">
+    update blogs
+    set blog_name = #{blogName,jdbcType=VARCHAR},
+      img_name = #{imgName,jdbcType=VARCHAR},
+      blog_content = #{blogContent,jdbcType=VARCHAR},
+      create_data = #{createData,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

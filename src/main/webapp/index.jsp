@@ -95,6 +95,14 @@
         }
     </script>
 
+
+    <style>
+        .content-blog{overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;}
+    </style>
 </head>
 <body>
 <!--PRELOADER-->
@@ -179,8 +187,6 @@
 
 
 
-
-
         <!--BLOG-->
         <section class="grey-bg" id="blog">
             <div class="container">
@@ -197,7 +203,7 @@
                             </div>
                         </div>
                         <!--GRID BLOG-->
-                        <div class="grid">
+                        <div class="grid" id="blogs">
                             <div class="grid-item">
                                 <div class="wrap-article">
                                     <img alt="blog-1" class="img-circle text-center" src="<%=basePath%>images/blog-1.png">
@@ -521,6 +527,8 @@
 </div>
 
 
+
+
 <script type="text/javascript" src="<%=basePath%>js/baguetteBox.min.js"></script>
 <script type="text/javascript">
     baguetteBox.run('.tz-gallery');
@@ -547,5 +555,30 @@
 <script src="<%=basePath%>js/typed.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/main.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/alertify.min.js" type="text/javascript"></script><!--alertify提醒-->
+
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>blog/getBlogForIndex",
+            dataType:"json",
+            success:function(data){
+
+                var blogContent="";
+                $.each( data, function(index, content){
+                   //注意，参数名是bean类的参数名
+                    blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgName"]+'"> <p class="subtitle fancy"> <span>'+content['createData']+'</span> </p> <a href="#"> <h3 class="title">'+content['blogName']+'</h3> </a> <p class="content-blog">'+content["blogContent"]+' </p> </div> </div>';
+                });
+
+                $("#blogs").html(blogContent);
+            },
+            error: function (data) {
+                console.info("error: " + data.responseText);
+            }
+        });
+
+    });
+</script>
 </body>
 </html>
