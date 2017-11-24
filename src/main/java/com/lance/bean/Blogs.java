@@ -3,17 +3,21 @@ package com.lance.bean;
 public class Blogs {
     private Integer id;
 
-    private String blogName;
+    private String blogname;
 
-    private String imgName;
+    private String imgname;
 
-    private String blogContent;
+    private String blogcontent;
 
-    private String createData;
+    private String date;
 
     private String author;
 
     private String deleted;
+
+    private Integer hot;
+
+    private Integer visittime;
 
     public Integer getId() {
         return id;
@@ -23,36 +27,36 @@ public class Blogs {
         this.id = id;
     }
 
-    public String getBlogName() {
-        return blogName;
+    public String getBlogname() {
+        return blogname;
     }
 
-    public void setBlogName(String blogName) {
-        this.blogName = blogName == null ? null : blogName.trim();
+    public void setBlogname(String blogname) {
+        this.blogname = blogname == null ? null : blogname.trim();
     }
 
-    public String getImgName() {
-        return imgName;
+    public String getImgname() {
+        return imgname;
     }
 
-    public void setImgName(String imgName) {
-        this.imgName = imgName == null ? null : imgName.trim();
+    public void setImgname(String imgname) {
+        this.imgname = imgname == null ? null : imgname.trim();
     }
 
-    public String getBlogContent() {
-        return blogContent;
+    public String getBlogcontent() {
+        return blogcontent;
     }
 
-    public void setBlogContent(String blogContent) {
-        this.blogContent = blogContent == null ? null : blogContent.trim();
+    public void setBlogcontent(String blogcontent) {
+        this.blogcontent = blogcontent == null ? null : blogcontent.trim();
     }
 
-    public String getCreateData() {
-        return createData;
+    public String getDate() {
+        return date;
     }
 
-    public void setCreateData(String createData) {
-        this.createData = createData == null ? null : createData.trim();
+    public void setDate(String date) {
+        this.date = date == null ? null : date.trim();
     }
 
     public String getAuthor() {
@@ -69,5 +73,60 @@ public class Blogs {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+
+    public Integer getHot() {
+        return hot;
+    }
+
+    public void setHot(Integer hot) {
+        this.hot = hot;
+    }
+
+    public Integer getVisittime() {
+        return visittime;
+    }
+
+    public void setVisittime(Integer visittime) {
+        this.visittime = visittime;
+    }
+
+    public Blogs() {
+        super();
+    }
+
+    public Blogs(Integer id, String blogname, String imgname, String blogcontent, String date, String author, String deleted, Integer hot, Integer visittime) {
+        this.id = id;
+        this.blogname = blogname;
+        this.imgname = imgname;
+        this.blogcontent = blogcontent;
+        this.date = date;
+        this.author = author;
+        this.deleted = deleted;
+        this.hot = hot;
+        this.visittime = visittime;
+    }
+
+    @Override
+    public String toString() {
+        return "Blogs{" +
+                "id=" + id +
+                ", blogname='" + blogname + '\'' +
+                ", imgname='" + imgname + '\'' +
+                ", blogcontent='" + blogcontent + '\'' +
+                ", date='" + date + '\'' +
+                ", author='" + author + '\'' +
+                ", deleted='" + deleted + '\'' +
+                ", hot=" + hot +
+                ", visittime=" + visittime +
+                '}';
+    }
+
+    public Blogs(String blogname, String blogcontent, String date, String author, Integer hot) {
+        this.blogname = blogname;
+        this.blogcontent = blogcontent;
+        this.date = date;
+        this.author = author;
+        this.hot = hot;
     }
 }

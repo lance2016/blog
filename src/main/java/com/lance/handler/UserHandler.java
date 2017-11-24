@@ -201,7 +201,6 @@ public class UserHandler extends GenericController {
     public int updateUser(@RequestParam String username,String nickname,Map<String,Object>map){
 
         System.out.println("==========================updateUser");
-        System.out.println(username+" "+nickname);
         User u= (User) map.get("user");
         System.out.println(u);
         u.setUsername(username);

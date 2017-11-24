@@ -3,12 +3,14 @@
 <mapper namespace="com.lance.dao.mapper.BlogsMapper">
   <resultMap id="BaseResultMap" type="com.lance.bean.Blogs">
     <id column="Id" jdbcType="INTEGER" property="id" />
-    <result column="blog_name" jdbcType="VARCHAR" property="blogName" />
-    <result column="img_name" jdbcType="VARCHAR" property="imgName" />
-    <result column="blog_content" jdbcType="VARCHAR" property="blogContent" />
-    <result column="create_data" jdbcType="VARCHAR" property="createData" />
+    <result column="blogName" jdbcType="VARCHAR" property="blogname" />
+    <result column="imgName" jdbcType="VARCHAR" property="imgname" />
+    <result column="blogContent" jdbcType="VARCHAR" property="blogcontent" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="deleted" jdbcType="VARCHAR" property="deleted" />
+    <result column="hot" jdbcType="INTEGER" property="hot" />
+    <result column="visitTime" jdbcType="INTEGER" property="visittime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    Id, blog_name, img_name, blog_content, create_data, author, deleted
+    Id, blogName, imgName, blogContent, date, author, deleted, hot, visitTime
   </sql>
   <select id="selectByExample" parameterType="com.lance.bean.BlogsExample" resultMap="BaseResultMap">
     select
@@ -84,6 +86,22 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+
+  <select id="selectBlogForIndex" parameterType="com.lance.bean.BlogsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blogs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    limit 6
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -102,12 +120,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lance.bean.Blogs">
-    insert into blogs (Id, blog_name, img_name, 
-      blog_content, create_data, author, 
-      deleted)
-    values (#{id,jdbcType=INTEGER}, #{blogName,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, 
-      #{blogContent,jdbcType=VARCHAR}, #{createData,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
-      #{deleted,jdbcType=VARCHAR})
+    insert into blogs (Id, blogName, imgName, 
+      blogContent, date, author, 
+      deleted, hot, visitTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{blogname,jdbcType=VARCHAR}, #{imgname,jdbcType=VARCHAR}, 
+      #{blogcontent,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR}, #{hot,jdbcType=INTEGER}, #{visittime,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lance.bean.Blogs">
     insert into blogs
@@ -115,17 +135,17 @@
       <if test="id != null">
         Id,
       </if>
-      <if test="blogName != null">
-        blog_name,
+      <if test="blogname != null">
+        blogName,
       </if>
-      <if test="imgName != null">
-        img_name,
+      <if test="imgname != null">
+        imgName,
       </if>
-      <if test="blogContent != null">
-        blog_content,
+      <if test="blogcontent != null">
+        blogContent,
       </if>
-      <if test="createData != null">
-        create_data,
+      <if test="date != null">
+        date,
       </if>
       <if test="author != null">
         author,
@@ -133,28 +153,40 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="hot != null">
+        hot,
+      </if>
+      <if test="visittime != null">
+        visitTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="blogName != null">
-        #{blogName,jdbcType=VARCHAR},
+      <if test="blogname != null">
+        #{blogname,jdbcType=VARCHAR},
       </if>
-      <if test="imgName != null">
-        #{imgName,jdbcType=VARCHAR},
+      <if test="imgname != null">
+        #{imgname,jdbcType=VARCHAR},
       </if>
-      <if test="blogContent != null">
-        #{blogContent,jdbcType=VARCHAR},
+      <if test="blogcontent != null">
+        #{blogcontent,jdbcType=VARCHAR},
       </if>
-      <if test="createData != null">
-        #{createData,jdbcType=VARCHAR},
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
       </if>
       <if test="author != null">
         #{author,jdbcType=VARCHAR},
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="hot != null">
+        #{hot,jdbcType=INTEGER},
+      </if>
+      <if test="visittime != null">
+        #{visittime,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -170,23 +202,29 @@
       <if test="record.id != null">
         Id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.blogName != null">
-        blog_name = #{record.blogName,jdbcType=VARCHAR},
+      <if test="record.blogname != null">
+        blogName = #{record.blogname,jdbcType=VARCHAR},
       </if>
-      <if test="record.imgName != null">
-        img_name = #{record.imgName,jdbcType=VARCHAR},
+      <if test="record.imgname != null">
+        imgName = #{record.imgname,jdbcType=VARCHAR},
       </if>
-      <if test="record.blogContent != null">
-        blog_content = #{record.blogContent,jdbcType=VARCHAR},
+      <if test="record.blogcontent != null">
+        blogContent = #{record.blogcontent,jdbcType=VARCHAR},
       </if>
-      <if test="record.createData != null">
-        create_data = #{record.createData,jdbcType=VARCHAR},
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=VARCHAR},
       </if>
       <if test="record.author != null">
         author = #{record.author,jdbcType=VARCHAR},
       </if>
       <if test="record.deleted != null">
         deleted = #{record.deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hot != null">
+        hot = #{record.hot,jdbcType=INTEGER},
+      </if>
+      <if test="record.visittime != null">
+        visitTime = #{record.visittime,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -196,12 +234,14 @@
   <update id="updateByExample" parameterType="map">
     update blogs
     set Id = #{record.id,jdbcType=INTEGER},
-      blog_name = #{record.blogName,jdbcType=VARCHAR},
-      img_name = #{record.imgName,jdbcType=VARCHAR},
-      blog_content = #{record.blogContent,jdbcType=VARCHAR},
-      create_data = #{record.createData,jdbcType=VARCHAR},
+      blogName = #{record.blogname,jdbcType=VARCHAR},
+      imgName = #{record.imgname,jdbcType=VARCHAR},
+      blogContent = #{record.blogcontent,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=VARCHAR},
       author = #{record.author,jdbcType=VARCHAR},
-      deleted = #{record.deleted,jdbcType=VARCHAR}
+      deleted = #{record.deleted,jdbcType=VARCHAR},
+      hot = #{record.hot,jdbcType=INTEGER},
+      visitTime = #{record.visittime,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -209,17 +249,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.lance.bean.Blogs">
     update blogs
     <set>
-      <if test="blogName != null">
-        blog_name = #{blogName,jdbcType=VARCHAR},
+      <if test="blogname != null">
+        blogName = #{blogname,jdbcType=VARCHAR},
       </if>
-      <if test="imgName != null">
-        img_name = #{imgName,jdbcType=VARCHAR},
+      <if test="imgname != null">
+        imgName = #{imgname,jdbcType=VARCHAR},
       </if>
-      <if test="blogContent != null">
-        blog_content = #{blogContent,jdbcType=VARCHAR},
+      <if test="blogcontent != null">
+        blogContent = #{blogcontent,jdbcType=VARCHAR},
       </if>
-      <if test="createData != null">
-        create_data = #{createData,jdbcType=VARCHAR},
+      <if test="date != null">
+        date = #{date,jdbcType=VARCHAR},
       </if>
       <if test="author != null">
         author = #{author,jdbcType=VARCHAR},
@@ -227,17 +267,25 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="hot != null">
+        hot = #{hot,jdbcType=INTEGER},
+      </if>
+      <if test="visittime != null">
+        visitTime = #{visittime,jdbcType=INTEGER},
+      </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lance.bean.Blogs">
     update blogs
-    set blog_name = #{blogName,jdbcType=VARCHAR},
-      img_name = #{imgName,jdbcType=VARCHAR},
-      blog_content = #{blogContent,jdbcType=VARCHAR},
-      create_data = #{createData,jdbcType=VARCHAR},
+    set blogName = #{blogname,jdbcType=VARCHAR},
+      imgName = #{imgname,jdbcType=VARCHAR},
+      blogContent = #{blogcontent,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
       author = #{author,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      hot = #{hot,jdbcType=INTEGER},
+      visitTime = #{visittime,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

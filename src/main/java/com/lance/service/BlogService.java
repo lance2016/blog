@@ -13,5 +13,6 @@ public interface BlogService {
     public Blogs findBlog(Integer id);
     public List<Blogs> getAllBlogs();
     public List<Blogs> getBlogForIndex();
-    public int updateBlog();
+    public Blogs getBlog(Integer id);
+    public int updateBlog(Blogs blogs);
 }

@@ -20,32 +20,42 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int insertBlog(Blogs blogs) {
-        return 0;
+        return blogsMapper.insert(blogs);
     }
 
     @Override
     public int deleteBlog(Integer id) {
-        return 0;
+        return blogsMapper.deleteByPrimaryKey(id);
     }
+
 
     @Override
     public Blogs findBlog(Integer id) {
-        return null;
+        return blogsMapper.selectByPrimaryKey(id);
     }
+
+
 
     @Override
     public List<Blogs> getAllBlogs() {
-        return null;
-    }
-
-    @Override
-    public List<Blogs> getBlogForIndex() {
         BlogsExample blogsExample=new BlogsExample();
         return blogsMapper.selectByExample(blogsExample);
     }
 
     @Override
-    public int updateBlog() {
-        return 0;
+    public List<Blogs> getBlogForIndex() {
+        BlogsExample blogsExample=new BlogsExample();
+        blogsExample.setOrderByClause("hot desc,date desc");
+        return blogsMapper.selectBlogForIndex(blogsExample);
+    }
+
+    @Override
+    public Blogs getBlog(Integer id) {
+        return blogsMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateBlog(Blogs blogs) {
+        return blogsMapper.updateByPrimaryKey(blogs);
     }
 }

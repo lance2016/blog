@@ -15,8 +15,8 @@
     <meta content="Bodo - Simple One Page Personal" name="description">
     <meta content="BdgPixel" name="author">
     <!--Fav-->
-    <link href="images/favicon.ico" rel="shortcut icon">
-
+    <link rel="icon" href="<%=basePath%>images/fate.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<%=basePath%>images/fate.ico" type="image/x-icon" />
 
 
     <!--styles-->
@@ -94,14 +94,42 @@
             });
         }
     </script>
-
-
     <style>
-        .content-blog{overflow : hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;}
+    /*多行文本省略*/
+        .content-blog{
+            position:relative;
+            line-height:1.4em;
+            /* 3 times the line-height to show 3 lines */
+            height:4.2em;
+            overflow:hidden;
+        }
+        .content-blog::after {
+            content:"...";
+            font-weight:bold;
+            position:absolute;
+            bottom:0;
+            right:0;
+            padding:0 20px 1px 40px;
+            background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
+        }
+        /*博客模态框文本*/
+
+    #blogContent{
+                font-size: 1em;
+                text-align:justify;
+                color:grey;
+                padding:10px 15px 10px 15px;
+                text-justify:inter-ideograph;
+            }
+
+    #blogModal{
+        margin:10% auto;
+    }
+    #blogName{
+            line-height: 40px;
+            font-size: 1.4em;
+    }
+
     </style>
 </head>
 <body>
@@ -118,7 +146,7 @@
     <div class="for-sticky">
         <!--LOGO-->
         <div class="col-md-2 col-xs-6 logo">
-            <a href="<%=basePath%>user/index"><img alt="logo" class="logo-nav" src="<%=basePath%>images/logo.png" ></a>
+            <a href="<%=basePath%>user/admin"><img alt="logo" class="logo-nav" src="<%=basePath%>images/logo.png" ></a>
         </div>
         <!--/.LOGO END-->
         <!--log in-->
@@ -482,7 +510,7 @@
 
 <!--登陆 -->
 
-<!-- 模态框（Modal） -->
+<!-- 登录模态框（Modal） -->
 <!--data-backdrop="static" data-keyboard="false"   点击空白和按esc键不退出-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
     <div class="modal-dialog"  >
@@ -496,24 +524,10 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <%--<form:form action="/user/login" method="post" >--%>
-                <%--id<form:input path="id"/>--%>
-
-                <%--用户名<form:input path="username"/>--%>
-
-                <%--密码<form:password path="password"/>--%>
-                <%--<input type="submit" value="登陆">--%>
-                <%--</form:form>--%>
-
-
-
                     <div class="form-group">
-
                         <input type="text" class="form-control" name="username" id="username" placeholder="请输入账号">
                     </div>
-                    <%--<div class="form-group">--%>
-                    <%--<input type="text" class="form-control" name="username" placeholder="请输入名称">--%>
-                    <%--</div>--%>
+
                     <div class="form-group">
                         <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
                     </div>
@@ -527,6 +541,42 @@
 </div>
 
 
+<!-- 博客显示模态框（Modal） -->
+<!--data-backdrop="static" data-keyboard="false"   点击空白和按esc键不退出-->
+<div class="modal" id="blogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
+    <div class="modal-dialog"  >
+        <div class="modal-content" >
+            <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="pull-left">
+                    <img src="<%=basePath%>images/blog-1.png" width="40px" class="img-circle"/>
+                </div>
+
+                <div  id="blogName" class="modal-title text-primary  text-center" >
+                    Blog
+                </div>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 text-center" id="detail" style="color: grey;font-size: 13px">
+                    <div id="author"  style="line-height: 13px;display: inline-block;">
+                        authorName
+                    </div>
+                    <div id="createTime" style="line-height: 13px;display: inline-block;">
+                        time
+                    </div>
+                    <div id="visitTimes" style="line-height: 13px;display: inline-block;">
+                        访问次数
+                    </div>
+                </div>
+                <table style="border: 10px;width: 100%"><tr ><td></td></tr></table>
+                <div id="blogContent" >Content</div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 
 <script type="text/javascript" src="<%=basePath%>js/baguetteBox.min.js"></script>
@@ -558,6 +608,8 @@
 
 
 <script>
+
+
     $(document).ready(function () {
         $.ajax({
             type:"POST",
@@ -568,7 +620,7 @@
                 var blogContent="";
                 $.each( data, function(index, content){
                    //注意，参数名是bean类的参数名
-                    blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgName"]+'"> <p class="subtitle fancy"> <span>'+content['createData']+'</span> </p> <a href="#"> <h3 class="title">'+content['blogName']+'</h3> </a> <p class="content-blog">'+content["blogContent"]+' </p> </div> </div>';
+                    blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgname"]+'"> <p class="subtitle fancy"> <span>'+content['date']+'</span> </p> <a href="javascript:void(0);" onclick="findBlog('+content["id"]+')"> <h3 class="title">'+content['blogname']+'</h3> </a> <p class="content-blog">'+content["blogcontent"]+' </p> </div> </div>';
                 });
 
                 $("#blogs").html(blogContent);
@@ -579,6 +631,27 @@
         });
 
     });
+
+
+    function findBlog(id) {
+        $.ajax({
+            type: "POST",
+            url: "<%=basePath%>blog/getBlogById?id="+id,
+            dataType: "json",
+            success: function (data) {
+                //alert(data["blogContent"]);
+                $("#blogName").text(data['blogname']);
+                $("#blogContent").text(data['blogcontent']);
+                $("#author").text("作者:"+data['author']);
+                $("#createTime").text("创建时间:"+data['date']);
+                $("#visitTimes").text("访问次数:"+data['visittime']);
+                $('#blogModal').modal('show');
+               // alert(data);
+            }
+        });
+    }
 </script>
+
+
 </body>
 </html>

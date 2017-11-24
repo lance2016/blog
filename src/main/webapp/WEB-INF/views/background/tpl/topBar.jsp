@@ -23,9 +23,9 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li class="active" style="text-decoration: none" ><a href="#"><%=user.getNickname()%></a></li>
-                <li><a href="#" style="text-decoration: none" >Blogs</a></li>
-                <li><a href="#" style="text-decoration: none" >Album</a></li>
+                <li class="active" style="text-decoration: none" ><a href="javascript:void(0)" onclick="listAllUsers()"><%=user.getNickname()%></a></li>
+                <li><a href="javascript:void(0)" onclick="listAllBlogs()" style="text-decoration: none" >Blogs</a></li>
+                <li><a href="javascript:void(0)" style="text-decoration: none" >Album</a></li>
                 <li><a href="<%=basePath%>user/logout" style="text-decoration: none" >注销</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

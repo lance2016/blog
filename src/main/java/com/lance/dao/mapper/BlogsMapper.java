@@ -4,7 +4,9 @@ import com.lance.bean.Blogs;
 import com.lance.bean.BlogsExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface BlogsMapper {
     long countByExample(BlogsExample example);
 
@@ -18,7 +20,10 @@ public interface BlogsMapper {
 
     List<Blogs> selectByExample(BlogsExample example);
 
+    List<Blogs> selectBlogForIndex(BlogsExample example);
+
     Blogs selectByPrimaryKey(Integer id);
+
 
     int updateByExampleSelective(@Param("record") Blogs record, @Param("example") BlogsExample example);
 
