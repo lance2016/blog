@@ -1,0 +1,57 @@
+
+    /*首页blog内容*/
+    /*多行文本省略*/
+.content-blog{
+    height: 100px;
+    display: -webkit-box;
+    line-height: 20px;
+    font-size: 15px;
+    text-align: center;
+    padding:0px;
+    margin:0px;
+    font-family: "Microsoft YaHei", "宋体", "Segoe UI", "Lucida Grande", Helvetica, Arial, sans-serif, FreeSans, Arimo;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+}
+
+
+.content-blog div{
+
+    line-height: 20px;
+    font-size: 15px;
+    padding:0px;
+    margin:0px;
+}
+.content-blog p{
+
+    line-height: 20px;
+    font-size: 15px;
+    padding:0px;
+    margin:0px;
+}
+
+/*博客模态框文本*/
+
+#blogContent{
+    margin:0 auto;
+    padding:30px 20px 20px 20px;
+    font-size: 1em;
+    text-align:justify;
+    color:grey;
+    line-height: 18px;
+    text-justify:inter-ideograph;
+}
+#blogContent p{
+    font-size: 16px;
+    line-height: 20px;
+}
+
+#blogModal{
+    margin:10% auto;
+    width: 100%;
+}
+#blogName{
+    line-height: 40px;
+    font-size: 1.4em;
+}

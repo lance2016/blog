@@ -12,7 +12,7 @@ public interface BlogService {
     public int deleteBlog(Integer id);
     public Blogs findBlog(Integer id);
     public List<Blogs> getAllBlogs();
-    public List<Blogs> getBlogForIndex();
+    public List<Blogs> getBlogForIndex(int num);
     public Blogs getBlog(Integer id);
     public int updateBlog(Blogs blogs);
 }

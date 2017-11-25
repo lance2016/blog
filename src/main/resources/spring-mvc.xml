@@ -53,12 +53,18 @@
             <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
             <mvc:mapping path="/**" />
             <mvc:exclude-mapping path="/user/login"/>
-            <!--<mvc:mapping path="/background/**" />  &lt;!&ndash; 拦截用户路径 &ndash;&gt;-->
-            <!--<mvc:mapping path="/image/**" />  &lt;!&ndash; 拦截图片管理路径 &ndash;&gt;-->
-            <!--<mvc:mapping path="/upload/**" />  &lt;!&ndash; 拦截图片下载路径 &ndash;&gt;-->
-            <bean class="com.lance.interceptor.LoginInterceptor"></bean>    <!-- 自定义拦截器路径 -->
-        </mvc:interceptor>
+            <bean class="com.lance.interceptor.LoginInterceptor">
+                <!--定义不拦截的路径-->
+                <property name="uncheckUrls">
+                    <list>
+                        <value>/blog/blog/getBlog</value>
+                        <value>/blog/images/fate.ico</value>
 
+                    </list>
+                </property>
+            </bean>
+
+        </mvc:interceptor>
             <!-- 多个拦截器，顺序执行 -->
             <mvc:interceptor>
                 <mvc:mapping path="/background/**"/>

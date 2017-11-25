@@ -4,11 +4,15 @@ package com.lance.handler;
 
 import com.lance.bean.Blogs;
 import com.lance.common.GenericController;
+import com.lance.common.ImageUploadUtil;
 import com.lance.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,19 +29,28 @@ public class BlogHandler extends GenericController {
     @Autowired
     BlogService blogService;
 
-
+//获取当时日期
     public static String getNowDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
         String formatStr =formatter.format(new Date());
         return formatStr;
     }
+    //随机数，用于生成随机博客图
+    public int getRandomNum(){
+        java.util.Random random=new java.util.Random();// 定义随机类
+        int result=random.nextInt(10);// 返回[0,10)集合中的整数，注意不包括10
+        return result+1;
+    }
+
+
+
 //    前台
 //    查询首页blog,按照先hot，后date降序排列
     @ResponseBody
     @RequestMapping(value="/getBlogForIndex",method = RequestMethod.POST)
     public List<Blogs> getBlogForIndex(){
 
-       List<Blogs>list=blogService.getBlogForIndex();
+       List<Blogs>list=blogService.getBlogForIndex(6);
         return list;
     }
     //查看对应blog
@@ -48,13 +61,15 @@ public class BlogHandler extends GenericController {
     }
 
 
+    @RequestMapping(value = "/getBlog",method=RequestMethod.GET)
+    public String getBlog(@RequestParam Integer id){
+        return "second";
+    }
+
 
     /*
     *后台
      */
-
-
-
 
     //默认调用其他方法前先调用该方法
     @ModelAttribute
@@ -79,19 +94,23 @@ public class BlogHandler extends GenericController {
     }
 
 
-    //更新博客
 
 
 
 
     //增加博客
     @ResponseBody
-    @RequestMapping("/addBlog")
+    @RequestMapping(value = "/addBlog",method = RequestMethod.POST)
     public int addBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot){
 
-        Blogs blogs=new Blogs(blogname,blogcontent,getNowDate(),author,hot);
-        System.out.println(blogs);
-        return blogService.insertBlog(blogs);
+        if(blogname.trim().equals("")||author.trim().equals("")||blogcontent.trim().equals(""))
+             return 0;
+        else {
+            Blogs blogs=new Blogs(blogname,blogcontent,getNowDate(),author,hot);
+            blogs.setImgname("default ("+getRandomNum()+").jpg");//设置随机头像
+            return blogService.insertBlog(blogs);
+        }
+
     }
 
 
@@ -106,15 +125,35 @@ public class BlogHandler extends GenericController {
     @ResponseBody
     @RequestMapping(value = "updateBlog",method = RequestMethod.POST)
     public int updateBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot,Map<String,Object>map){
-        System.out.println(blogname+author+"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-        Blogs blogs= (Blogs) map.get("blog");
-        blogs.setBlogname(blogname);
-        blogs.setAuthor(author);
-        blogs.setBlogcontent(blogcontent);
-        blogs.setDate(getNowDate());
-        blogs.setHot(hot);
-        blogService.updateBlog(blogs);
-        return 1;
+      //  System.out.println(blogname+author+"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        //信息不全
+        if(blogname.trim().equals("")||author.trim().equals("")||blogcontent.trim().equals(""))
+            return 0;
+        else{
+            Blogs blogs= (Blogs) map.get("blog");
+            blogs.setBlogname(blogname);
+            blogs.setAuthor(author);
+            blogs.setBlogcontent(blogcontent);
+            blogs.setDate(getNowDate());
+            blogs.setHot(hot);
+        return  blogService.updateBlog(blogs);
+
+        }
+
+    }
+
+
+
+    @RequestMapping("imageUpload")
+    public void imageUpload(HttpServletRequest request, HttpServletResponse response) {
+        String DirectoryName = "/images/";
+        try {
+            ImageUploadUtil.ckeditor(request, response, DirectoryName);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

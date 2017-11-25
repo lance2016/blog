@@ -52,7 +52,7 @@
 
     <div class="form-group">
         <label for="blogcontent">文章内容</label>
-        <textarea  name="opinion" rows="10" cols="38" id="blogcontent"></textarea>
+        <textarea  name="opinion" rows="10" cols="38" class="ckeditor" id="blogcontent"></textarea>
     </div>
 
 
@@ -79,7 +79,7 @@
         CKEDITOR.instances.blogcontent.setData('');
 
     }
-    //增加用户
+    //增加博客
     function addBlog(){
         var data = {
             'blogname':     $("#blogname").val(),
@@ -93,15 +93,21 @@
             dataType:"json",
             //contentType:"application/json", //不能添加这个头
             data:data, //这里不能进行JSON.stringify,发送请求的数据在:form data
-
+            beforeSend: function () {
+                // 禁用按钮防止重复提交
+                $("#btn").attr({ disabled: "disabled" });
+            },
             success:function(data){
                 if(data==1){
                     alertify.success("添加成功");
                    clearInput();
                 }
-                else
-                    alertify.error("两次密码不一致");
+                else if(data==0){
+                    alertify.log("请填写完整");
+                }
 
+            }, complete: function () {
+                $("#btn").removeAttr("disabled");
             },
             error: function (data) {
                 console.info("error: " + data.responseText);

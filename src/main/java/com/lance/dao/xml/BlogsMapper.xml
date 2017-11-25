@@ -101,7 +101,6 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    limit 6
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

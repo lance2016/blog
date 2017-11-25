@@ -28,16 +28,16 @@
                 <li><a href="javascript:void(0)" style="text-decoration: none" >Album</a></li>
                 <li><a href="<%=basePath%>user/logout" style="text-decoration: none" >注销</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                         设置 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">注销</a></li>
-                        <li><a href="#">切换用户</a></li>
+                        <li><a href="javascript:void(0);">注销</a></li>
+                        <li><a href="javascript:void(0);">切换用户</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">分离的链接</a></li>
+                        <li><a href="javascript:void(0);">分离的链接</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">另一个分离的链接</a></li>
+                        <li><a href="javascript:void(0);">另一个分离的链接</a></li>
                     </ul>
                 </li>
             </ul>

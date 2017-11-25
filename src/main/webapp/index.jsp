@@ -1,5 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -17,8 +15,6 @@
     <!--Fav-->
     <link rel="icon" href="<%=basePath%>images/fate.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="<%=basePath%>images/fate.ico" type="image/x-icon" />
-
-
     <!--styles-->
     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
     <link href="<%=basePath%>css/owl.carousel.css" rel="stylesheet">
@@ -30,16 +26,14 @@
     <!--fonts google-->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
-
-
     <!--alert css-->
-
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.default.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.core.css">
     <!--gallery-->
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/htmleaf-demo.css">
     <link rel="stylesheet" href="<%=basePath%>css/baguetteBox.min.css">
     <link rel="stylesheet" href="<%=basePath%>css/thumbnail-gallery.css">
+    <link rel="stylesheet" href="<%=basePath%>css/index.css">
     <script src="<%=basePath%>js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="<%=basePath%>js/html5shiv.min.js"></script>
@@ -47,92 +41,9 @@
 
 
 
-    <script type="text/javascript">
 
-        //清空输入
-        function clearInput(){
-            $("#username").val("");
-            $("#password").val("");
-        }
-
-        //登录
-        function ajaxTest(){
-            var data = {
-                'username':$("#username").val(),
-                'password':$("#password").val()};
-            $.ajax({
-                type:"POST",
-                url:"${pageContext.request.contextPath}/user/login",
-                dataType:"json",
-                //contentType:"application/json", //不能添加这个头
-                data:data, //这里不能进行JSON.stringify,发送请求的数据在:form data
-                beforeSend: function () {
-                    // 禁用按钮防止重复提交
-                    $("#btn").attr({ disabled: "disabled" });
-                },
-                success:function(data){
-                   if(data=="1"){
-                       //跳转页面
-                       clearInput();
-                       alertify.success("登陆成功");
-                       setTimeout(function () {
-                           window.location.href="${pageContext.request.contextPath}/user/admin";
-                           },
-                           500);
-
-                   }
-                   else{
-                       alertify.error("用户名或密码错误");
-                   }
-
-                }, complete: function () {
-                    $("#btn").removeAttr("disabled");
-                },
-                error: function (data) {
-                    console.info("error: " + data.responseText);
-                }
-            });
-        }
-    </script>
-    <style>
-    /*多行文本省略*/
-        .content-blog{
-            position:relative;
-            line-height:1.4em;
-            /* 3 times the line-height to show 3 lines */
-            height:4.2em;
-            overflow:hidden;
-        }
-        .content-blog::after {
-            content:"...";
-            font-weight:bold;
-            position:absolute;
-            bottom:0;
-            right:0;
-            padding:0 20px 1px 40px;
-            background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
-        }
-        /*博客模态框文本*/
-
-    #blogContent{
-                font-size: 1em;
-                text-align:justify;
-                color:grey;
-                padding:10px 15px 10px 15px;
-                text-justify:inter-ideograph;
-            }
-
-    #blogModal{
-        margin:10% auto;
-    }
-    #blogName{
-            line-height: 40px;
-            font-size: 1.4em;
-    }
-
-    </style>
 </head>
-<body>
+<body id="index">
 <!--PRELOADER-->
 <div id="preloader">
     <div id="status">
@@ -151,9 +62,9 @@
         <!--/.LOGO END-->
         <!--log in-->
         <div class="col-md-2 col-md-offset-8">
-            <a href="#" data-toggle="modal" id="login" data-target="#myModal" style="line-height:50px;color:cornflowerblue;text-decoration: none">
-                log in
-            </a>
+            <%--<a href="javascript:void(0);" data-toggle="modal" id="login" data-target="#myModal" style="line-height:50px;color:cornflowerblue;text-decoration: none">--%>
+                <%--log in--%>
+            <%--</a>--%>
         </div>
     </div>
     <div class="menu-wrap">
@@ -199,7 +110,9 @@
                 <div class="row">
                     <div class="wrap-hero-content">
                         <div class="hero-content">
-                            <h1>Hello</h1>
+                            <h1>
+                                <a href="javascript:void(0);" data-toggle="modal"  data-target="#myModal" style="line-height:50px;color:cornflowerblue;text-decoration: none">Hello</a>
+                            </h1>
                             <br>
                             <span class="typed"></span>
                         </div>
@@ -260,9 +173,9 @@
                                             Just Start
                                         </h3>
                                     </a>
-                                    <p class="content-blog">
+                                    <div class="content-blog">
                                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -543,9 +456,9 @@
 
 <!-- 博客显示模态框（Modal） -->
 <!--data-backdrop="static" data-keyboard="false"   点击空白和按esc键不退出-->
-<div class="modal" id="blogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
-    <div class="modal-dialog"  >
-        <div class="modal-content" >
+<div class="modal"  style="width:100%"  id="blogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
+    <div class="modal-dialog" style="width:80%;margin: 0 auto;" >
+        <div class="modal-content"  >
             <div class="modal-header" >
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
@@ -559,7 +472,7 @@
                 </div>
 
             </div>
-            <div class="modal-body">
+            <div class="modal-body" >
                 <div class="col-md-12 text-center" id="detail" style="color: grey;font-size: 13px">
                     <div id="author"  style="line-height: 13px;display: inline-block;">
                         authorName
@@ -571,29 +484,16 @@
                         访问次数
                     </div>
                 </div>
-                <table style="border: 10px;width: 100%"><tr ><td></td></tr></table>
-                <div id="blogContent" >Content</div>
+                <div id="blogContent" >
+                        this is the concrete content
+                </div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
 
-
+</body>
 <script type="text/javascript" src="<%=basePath%>js/baguetteBox.min.js"></script>
-<script type="text/javascript">
-    baguetteBox.run('.tz-gallery');
-
-    //模态框消失后清空表单内容
-    $(function () { $('#myModal').on('hide.bs.modal', function () {
-            clearInput();
-        });
-    });
-
-
-
-
-</script>
-
 <script src="<%=basePath%>js/jquery.appear.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/bootstrap.min.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/classie.js" type="text/javascript"></script>
@@ -605,12 +505,58 @@
 <script src="<%=basePath%>js/typed.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/main.js" type="text/javascript"></script>
 <script src="<%=basePath%>js/alertify.min.js" type="text/javascript"></script><!--alertify提醒-->
-
-
 <script>
+    //清空输入
+    function clearInput(){
+        $("#username").val("");
+        $("#password").val("");
+    }
 
+    //登录
+    function ajaxTest(){
+        var data = {
+            'username':$("#username").val(),
+            'password':$("#password").val()};
+        $.ajax({
+            type:"POST",
+            url:"${pageContext.request.contextPath}/user/login",
+            dataType:"json",
+            //contentType:"application/json", //不能添加这个头
+            data:data, //这里不能进行JSON.stringify,发送请求的数据在:form data
+            beforeSend: function () {
+                // 禁用按钮防止重复提交
+                $("#btn").attr({ disabled: "disabled" });
+            },
+            success:function(data){
+                if(data=="1"){
+                    //跳转页面
+                    clearInput();
+                    alertify.success("登陆成功");
+                    setTimeout(function () {
+                            window.location.href="${pageContext.request.contextPath}/user/admin";
+                        },
+                        500);
 
+                }
+                else{
+                    alertify.error("用户名或密码错误");
+                }
+
+            }, complete: function () {
+                $("#btn").removeAttr("disabled");
+            },
+            error: function (data) {
+                console.info("error: " + data.responseText);
+            }
+        });
+    }
+
+//加载blog
     $(document).ready(function () {
+       getAllBlogs();
+    });
+
+    function getAllBlogs() {
         $.ajax({
             type:"POST",
             url:"<%=basePath%>blog/getBlogForIndex",
@@ -619,9 +565,11 @@
 
                 var blogContent="";
                 $.each( data, function(index, content){
-                   //注意，参数名是bean类的参数名
-                    blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgname"]+'"> <p class="subtitle fancy"> <span>'+content['date']+'</span> </p> <a href="javascript:void(0);" onclick="findBlog('+content["id"]+')"> <h3 class="title">'+content['blogname']+'</h3> </a> <p class="content-blog">'+content["blogcontent"]+' </p> </div> </div>';
+                    //注意，参数名是bean类的参数名
+                    var date=content['date'].substring(0,10);//时间只显示日期
+                    blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgname"]+'"> <p class="subtitle fancy"> <span>'+date+'</span> </p> <a href="<%=basePath%>blog/getBlog?id='+content["id"]+'";> <h3 class="title">'+content['blogname']+'</h3> </a> <div class="content-blog">'+content["blogcontent"]+'</div> </div> </div> </div>';
                 });
+
 
                 $("#blogs").html(blogContent);
             },
@@ -630,28 +578,45 @@
             }
         });
 
-    });
-
-
-    function findBlog(id) {
+    }
+    //利用ajax不更新切换右侧div内容
+    function  load(testUrl,locate) {
         $.ajax({
-            type: "POST",
-            url: "<%=basePath%>blog/getBlogById?id="+id,
-            dataType: "json",
-            success: function (data) {
-                //alert(data["blogContent"]);
-                $("#blogName").text(data['blogname']);
-                $("#blogContent").text(data['blogcontent']);
-                $("#author").text("作者:"+data['author']);
-                $("#createTime").text("创建时间:"+data['date']);
-                $("#visitTimes").text("访问次数:"+data['visittime']);
-                $('#blogModal').modal('show');
-               // alert(data);
+            url:"<%=basePath%>blog/getJsp?tpl="+testUrl,
+            async:false,
+            type:"get",
+            dataType:"html",
+            success:function(msg){
+                $(locate).html(msg);
             }
         });
     }
+
+
+    <%--function findBlog(id) {--%>
+        <%--$.ajax({--%>
+            <%--type: "POST",--%>
+            <%--url: "<%=basePath%>blog/getBlogById?id="+id,--%>
+            <%--dataType: "json",--%>
+            <%--success: function (data) {--%>
+                <%--//alert(data["blogContent"]);--%>
+                <%--load("second","#index");--%>
+                <%--$("#blogName").text(data['blogname']);--%>
+                <%--$("#blogContent").html(data['blogcontent']);--%>
+                <%--$("#author").text("作者:"+data['author']);--%>
+                <%--$("#createTime").text("创建时间:"+data['date']);--%>
+                <%--$("#visitTimes").text("访问次数:"+data['visittime']);--%>
+                <%--$('#blogModal').modal('show');--%>
+                 <%--alert(data);--%>
+            <%--}--%>
+        <%--});--%>
+    <%--}--%>
+    baguetteBox.run('.tz-gallery');
+    //模态框消失后清空表单内容
+    $(function () { $('#myModal').on('hide.bs.modal', function () {
+        clearInput();
+    });
+    });
 </script>
 
-
-</body>
 </html>

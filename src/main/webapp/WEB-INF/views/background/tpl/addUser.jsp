@@ -54,7 +54,7 @@
     </div>
     <div style="padding-top: 100px">
         <!--此处用button，会出现问题，所以用a来代替-->
-        <a href="#" id="clearInput" onclick="clearInput()" class="btn btn-danger col-md-1 col-md-offset-5">清空</a>
+        <a href="javascript:void(0)" id="clearInput" onclick="clearInput()" class="btn btn-danger col-md-1 col-md-offset-5">清空</a>
         <button type="submit" id="btn" onclick="addUser()" class="btn btn-success col-md-1 col-md-offset-1">提交</button>
     </div>
 

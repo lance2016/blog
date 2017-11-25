@@ -21,13 +21,12 @@
     <!--下面两个放反了结果出问题了-->
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.core.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>css/alertify.default.css">
-
     <style>
         .container{
             padding: 0px;
         }
     </style>
-    <%--<link rel="stylesheet" type="text/css" href="<%=basePath%>css/bgcss.css">--%>
+
 </head>
 <body style="background-color: #ffffff">
 <%User user= (User) session.getAttribute("account");%>
@@ -50,12 +49,14 @@
             加载在这里
 
         </div>
+
     </div>
 </div>
 
 
 <script src="<%=basePath%>js/jquery-1.9.1.min.js"></script>
 <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>js/ui-bootstrap-tpls.js"></script>
 <script src="<%=basePath%>js/alertify.min.js" type="text/javascript"></script><!--alertify提醒-->
 <script>
 
@@ -65,7 +66,6 @@
         load("userSidebar","#left");//左侧导航栏
         listAllUsers();//右侧内容,默认显示所有成员
         $("#con").height(document.documentElement.clientHeight-85);
-
     });
 
 
@@ -100,7 +100,6 @@
      */
 
 
-
     //获取查询到的全部用户，并拼接显示
     function listAllUsers() {
         var state=new Array(4);
@@ -111,13 +110,16 @@
             dataType:"json",
             success:function(data){
 
-                var user="<table class='table table-striped text-center'> <caption>所有用户</caption> <thead> <tr> <th class='col-md-2 text-center'>Id</th> <th class='col-md-2 text-center'>账号</th> <th class='col-md-2 text-center'>昵称</th> <th class='col-md-4 text-center'>访问时间</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>修改</th> </tr> </thead> <tbody>";
+                var user="<div class='col-md-12'><table class='table table-striped text-center'> <caption>所有用户</caption> <thead> <tr> <th class='col-md-2 text-center'>Id</th> <th class='col-md-2 text-center'>账号</th> <th class='col-md-2 text-center'>昵称</th> <th class='col-md-4 text-center'>访问时间</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>修改</th> </tr> </thead> <tbody>";
                 $.each( data, function(index, content){
                     user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['username']+"</td><td>"+content['nickname']+"</td><td>"+content["visittime"]+"</td><td><a href='#' onclick='deleteUser("+content['id']+")'>删除</a></td><td><a href='#' onclick='getUser("+content['id']+")'>修改</a> </td></tr>";
                 });
-                user=user+"</tbody></table>";
+                user=user+"</tbody></table></div>";
+
                 $("#right").html(user);
+
                 load("userSidebar","#left");//同时加载左侧侧边栏
+
             },
             error: function (data) {
                 console.info("error: " + data.responseText);
@@ -202,13 +204,13 @@
             url:"<%=basePath%>blog/listAllBlogs",
             dataType:"json",
             success:function(data){
-                var user="<table class='table table-striped text-center'> <caption>所有博客</caption> <thead> <tr> <th class='col-md-2 text-center'>Id</th> <th class='col-md-2 text-center'>标题</th> <th class='col-md-2 text-center'>作者</th> <th class='col-md-4 text-center'>修改时间</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>修改</th> </tr> </thead> <tbody>";
+                var user="<table class='table table-striped text-center'> <caption>所有博客</caption> <thead> <tr> <th class='col-md-2 text-center'>Id</th> <th class='col-md-2 text-center'>标题</th> <th class='col-md-2 text-center'>作者</th> <th class='col-md-3 text-center'>修改时间</th><th class='col-md-1 text-center'>置顶</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>修改</th> </tr> </thead> <tbody>";
                 $.each( data, function(index, content){
-                    user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['blogname']+"</td><td>"+content['author']+"</td><td>"+content["date"]+"</td><td><a href='#' onclick='deleteBlog("+content['id']+")'>删除</a></td><td><a href='#' onclick='getBlog("+content['id']+")'>修改</a> </td></tr>";
+                    user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['blogname']+"</td><td>"+content['author']+"</td><td>"+content["date"]+"</td><td>"+content['hot']+"</td>"+"<td><a href='#' onclick='deleteBlog("+content['id']+")'>删除</a></td><td><a href='#' onclick='getBlog("+content['id']+")'>修改</a> </td></tr>";
                 });
                 user=user+"</tbody></table>";
                 $("#right").html(user);
-                load("blogSidebar","#left");//同时加载左侧侧边栏
+                load("blogSidebar", "#left");//同时加载左侧侧边栏
             },
             error: function (data) {
                 console.info("error: " + data.responseText);
@@ -292,11 +294,19 @@
             url:"<%=basePath%>blog/updateBlog?id="+id,
             dataType:"json",
             data:data,
+            beforeSend: function () {
+                // 禁用按钮防止重复提交
+                $("#btn").attr({ disabled: "disabled" });
+            },
             success:function(data){
                 if(data==1)
                     alertify.success("修改成功");
-                else
+                else if(data==0){
+                    alertify.log("请填写完整");
+                }else
                     console.log("发生了点问题，返回值"+data);
+            }, complete: function () {
+                $("#btn").removeAttr("disabled");
             },
             error: function (data) {
                 alertify.error("修改失败");

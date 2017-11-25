@@ -39,13 +39,14 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blogs> getAllBlogs() {
         BlogsExample blogsExample=new BlogsExample();
+        blogsExample.setOrderByClause("hot desc,date desc");
         return blogsMapper.selectByExample(blogsExample);
     }
 
     @Override
-    public List<Blogs> getBlogForIndex() {
+    public List<Blogs> getBlogForIndex(int num) {
         BlogsExample blogsExample=new BlogsExample();
-        blogsExample.setOrderByClause("hot desc,date desc");
+        blogsExample.setOrderByClause("hot desc,date desc  limit "+num );
         return blogsMapper.selectBlogForIndex(blogsExample);
     }
 

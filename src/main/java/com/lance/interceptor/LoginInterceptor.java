@@ -5,12 +5,15 @@ package com.lance.interceptor;
  */
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.lance.bean.User;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import java.util.List;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter{
+
+    private List<String> uncheckUrls;
+
     /**
      * 在业务处理器处理请求之前被调用
      * 如果返回false
@@ -25,11 +28,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
+
         String requestUri = request.getRequestURI(); //请求完整路径，可用于登陆后跳转
         String contextPath = request.getContextPath();  //项目下完整路径
         String url = requestUri.substring(contextPath.length()); //请求页面
         System.out.print("发生拦截...");
         System.out.println("来自："+requestUri+"的请求");
+        System.out.println(uncheckUrls.contains(requestUri));
+        if(uncheckUrls.contains(requestUri))
+            return  true;
         User user =  (User)request.getSession().getAttribute("account");
         if(user == null){  //判断用户是否存在，不存在返回登录界面，继续拦截，存在通过拦截，放行到访问页面
             /**
@@ -75,5 +82,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
+    }
+
+    public void setUncheckUrls(List uncheckUrls) {
+        this.uncheckUrls = uncheckUrls;
+    }
+
+    public List<String> getUncheckUrls() {
+        return uncheckUrls;
     }
 }
