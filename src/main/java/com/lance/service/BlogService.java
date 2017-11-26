@@ -11,7 +11,8 @@ public interface BlogService {
     public int insertBlog(Blogs blogs);
     public int deleteBlog(Integer id);
     public Blogs findBlog(Integer id);
-    public List<Blogs> getAllBlogs();
+    public long CountSize();
+    public List<Blogs> getAllBlogs(int pageNum,int pageSize);
     public List<Blogs> getBlogForIndex(int num);
     public Blogs getBlog(Integer id);
     public int updateBlog(Blogs blogs);

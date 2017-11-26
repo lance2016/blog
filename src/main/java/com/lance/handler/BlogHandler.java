@@ -88,14 +88,24 @@ public class BlogHandler extends GenericController {
     //查询所有数据
     @ResponseBody
     @RequestMapping(value = "/listAllBlogs",method = RequestMethod.POST)
-    public List<Blogs>listAllBlogs(){
-        List<Blogs>list=blogService.getAllBlogs();
+    public List<Blogs>listAllBlogs(@RequestParam Integer page,Map<String,Object>map){
+        List<Blogs>list=blogService.getAllBlogs(page, 5);
+        Long pageCount=blogService.CountSize();
+        System.out.println(pageCount+"---------------------");
         return list;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "getTotalPage",method = RequestMethod.POST)
+    public Long getTotalPage(@RequestParam int pageSize){
+        System.out.println(pageSize);
+        Long total=blogService.CountSize();
+        if(total%pageSize==0)
+            return total/pageSize;
+        else
+            return (total/pageSize)+1;
 
-
-
+    }
 
 
     //增加博客

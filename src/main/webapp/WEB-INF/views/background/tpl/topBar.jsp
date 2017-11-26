@@ -10,11 +10,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+
 <%User user= (User) session.getAttribute("account"); %>
 <nav class="navbar navbar-default navbar-static-top container" >
     <div class="container-fluid">
@@ -44,5 +40,3 @@
         </div>
     </div>
 </nav>
-</body>
-</html>

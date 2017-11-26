@@ -34,12 +34,17 @@ public class BlogServiceImpl implements BlogService {
         return blogsMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public long CountSize() {
+        BlogsExample example=new BlogsExample();
+        return blogsMapper.countByExample(example);
+    }
 
 
     @Override
-    public List<Blogs> getAllBlogs() {
+    public List<Blogs> getAllBlogs(int pageNum,int pageSize) {
         BlogsExample blogsExample=new BlogsExample();
-        blogsExample.setOrderByClause("hot desc,date desc");
+        blogsExample.setOrderByClause("hot desc,date desc limit "+(pageNum-1)*pageSize+','+pageSize);
         return blogsMapper.selectByExample(blogsExample);
     }
 

@@ -11,22 +11,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>增加用户</title>
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <style>
-        .container{
-            padding: 0px;
-        }
-    </style>
-</head>
-<body>
 
 <form role="form" class="col-md-10 col-md-offset-1">
     <div class="form-group">
@@ -110,5 +95,3 @@
         });
     }
 </script>
-</body>
-</html>

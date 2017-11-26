@@ -10,9 +10,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<html>
-<head>
-    <title>Title</title>
+
     <script>
         //更新用户
         function  updateUser() {
@@ -36,7 +34,6 @@
                     console.info("error: " + data.responseText);
                 }
             });
-
         }
     </script>
 </head>
@@ -52,7 +49,6 @@
             <input type="text" class="form-control" id="username" name="username"
                    placeholder="请输入用户名">
         </div>
-
         <div class="form-group">
             <label for="nickname">昵称</label>
             <input type="text" class="form-control" id="nickname" name="nickname"
@@ -65,6 +61,3 @@
         </div>
 
     </form>
-
-</body>
-</html>
