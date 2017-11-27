@@ -7,8 +7,9 @@
     <!--
     注意这个地址，一定要修改
     -->
-    <classPathEntry location="D:\workspace\repo\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar"/>
+    <classPathEntry location="target\LanceBlog\WEB-INF\lib\mysql-connector-java-5.1.30.jar"/>
     <context id="testTables" targetRuntime="MyBatis3" >
+
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true" />
@@ -50,7 +51,7 @@
         <!-- ****************************************************************************************** -->
 
         <!-- 指定数据库表 -->
-        <table tableName="blogs"></table>
+        <table tableName="message"></table>
 
         <!-- 有些表的字段需要指定java类型
          <table schema="" tableName="">

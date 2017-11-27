@@ -196,20 +196,22 @@ public class UserHandler extends GenericController {
     /*
     * 修改用户
      */
+
+    //1.修改用户
+
     @ResponseBody
     @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
     public int updateUser(@RequestParam String username,String nickname,Map<String,Object>map){
 
         System.out.println("==========================updateUser");
         User u= (User) map.get("user");
-        System.out.println(u);
+      //  System.out.println(u);
         u.setUsername(username);
         u.setNickname(nickname);
         userService.updateUser(u);
         return 1;
     }
 
-    //1.修改用户
 
 
 

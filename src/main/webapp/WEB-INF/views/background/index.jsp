@@ -15,7 +15,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Bootstrap 实例 - 面包屑导航</title>
+    <title>lance的博客</title>
     <!--alert css-->
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--下面两个放反了结果出问题了-->
@@ -197,7 +197,7 @@
 
         var state=new Array(4);
         state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
-        var totalpage=10;
+        var totalpage=0;
             $.ajax({
                 type:"POST",
                 url:"<%=basePath%>blog/getTotalPage?pageSize=5",
@@ -324,7 +324,6 @@
 
     //获取博客，加载页面
     function getBlog(id) {
-
         $("paginationBlog").hide();
         $.ajax({
             type:"POST",
@@ -332,11 +331,12 @@
             dataType:"json",
             success:function(data){
                 load("addBlog","#right");
-
                 $("#blogname").val(data.blogname);
                 $("#author").val(data.author);
                 CKEDITOR.instances.blogcontent.setData(data.blogcontent);
                 $("#hot").val(data.hot);
+                $("#imgname").val(data.imgname);
+                $("#img").attr("src","<%=basePath%>images/"+data.imgname);
                 $("#btn").text("更新");
                 $('#btn').attr("onclick","updateBlog("+id+")");
             },
@@ -348,13 +348,13 @@
     }
 
 
-
     function  updateBlog(id) {
         var data={
             'blogname':     $("#blogname").val(),
             'author':       $("#author").val(),
             'blogcontent':CKEDITOR.instances.blogcontent.getData(),
-            'hot':          $("#hot").val()
+            'hot':          $("#hot").val(),
+            'imgname':      $("#imgname").val()
         };
 
         $.ajax({
@@ -384,6 +384,347 @@
 
     }
 
+
+
+
+    //message管理
+
+    function listAllMessages() {
+        var state=new Array(4);
+        var isread=new Array(2);
+        var color=new Array(2);
+        color[0]='red',color[1]='green';
+        state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
+        isread[0]='未读',isread[1]='已读'
+        var totalpage=0;
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/getTotalPage?pageSize=10",
+            dataType:"json",
+            success:function (data) {
+                totalpage=data;
+            }
+        });
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/listAllMessages?page=1",
+            dataType:"json",
+            success:function(data){
+                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                $.each( data, function(index, content){
+                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                });
+                user=user+"</tbody></table>";
+                $("#right").empty();
+                $("#right").append(user);
+                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                var options = {
+                    bootstrapMajorVersion: 3, //版本
+                    currentPage:1, //当前页数
+                    totalPages: totalpage, //总页数
+                    itemTexts: function (type, page, current) {
+                        switch (type) {
+                            case "first":
+                                return "首页";
+                            case "prev":
+                                return "上一页";
+                            case "next":
+                                return "下一页";
+                            case "last":
+                                return "末页";
+                            case "page":
+                                return page;
+                        }
+                    },  onPageClicked: function (event, originalEvent, type, page) {
+                        $.ajax({
+                            type: "POST",
+                            url: "<%=basePath%>message/listAllMessages?page=" + page,
+                            dataType: "json",
+                            success: function (data) {
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                $.each( data, function(index, content){
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                });
+                                user = user + "</tbody></table> ";
+                                $("#right").html(user);
+                                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                                $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
+                                var options = {
+                                    bootstrapMajorVersion: 3, //版本
+                                    currentPage: page, //当前页数
+                                    totalPages: totalpage, //总页数
+                                    itemTexts: function (type, page, current) {
+                                        switch (type) {
+                                            case "first":
+                                                return "首页";
+                                            case "prev":
+                                                return "上一页";
+                                            case "next":
+                                                return "下一页";
+                                            case "last":
+                                                return "末页";
+                                            case "page":
+                                                return page;
+                                        }
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                };
+                $('#paginationBlog').bootstrapPaginator(options);
+                $("#paginationBlog").show();
+            },
+            error: function (data) {
+                console.info("error: " + data.responseText);
+            }
+        });
+    }
+
+    function listUnreadMessages() {
+        var state=new Array(4);
+        var isread=new Array(2);
+        var color=new Array(2);
+        color[0]='red',color[1]='green';
+        state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
+        isread[0]='未读',isread[1]='已读'
+        var totalpage=0;
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/getUnreadPage?pageSize=10",
+            dataType:"json",
+            success:function (data) {
+                totalpage=data;
+            }
+        });
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/listUnreadMessages?page=1",
+            dataType:"json",
+            success:function(data){
+                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                $.each( data, function(index, content){
+                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                });
+                user=user+"</tbody></table>";
+                $("#right").empty();
+                $("#right").append(user);
+                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                var options = {
+                    bootstrapMajorVersion: 3, //版本
+                    currentPage:1, //当前页数
+                    totalPages: totalpage, //总页数
+                    itemTexts: function (type, page, current) {
+                        switch (type) {
+                            case "first":
+                                return "首页";
+                            case "prev":
+                                return "上一页";
+                            case "next":
+                                return "下一页";
+                            case "last":
+                                return "末页";
+                            case "page":
+                                return page;
+                        }
+                    },  onPageClicked: function (event, originalEvent, type, page) {
+                        $.ajax({
+                            type: "POST",
+                            url: "<%=basePath%>message/listUnreadMessages?page=" + page,
+                            dataType: "json",
+                            success: function (data) {
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                $.each( data, function(index, content){
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                });
+                                user = user + "</tbody></table> ";
+                                $("#right").html(user);
+                                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                                $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
+                                var options = {
+                                    bootstrapMajorVersion: 3, //版本
+                                    currentPage: page, //当前页数
+                                    totalPages: totalpage, //总页数
+                                    itemTexts: function (type, page, current) {
+                                        switch (type) {
+                                            case "first":
+                                                return "首页";
+                                            case "prev":
+                                                return "上一页";
+                                            case "next":
+                                                return "下一页";
+                                            case "last":
+                                                return "末页";
+                                            case "page":
+                                                return page;
+                                        }
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                };
+                $('#paginationBlog').bootstrapPaginator(options);
+                $("#paginationBlog").show();
+            },
+            error: function (data) {
+                console.info("error: " + data.responseText);
+            }
+        });
+    }
+
+
+    //获取已读消息
+
+    function listReadMessages() {
+        var state=new Array(4);
+        var isread=new Array(2);
+        var color=new Array(2);
+        color[0]='red',color[1]='green';
+        state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
+        isread[0]='未读',isread[1]='已读'
+
+        var totalpage=0;
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/getReadPage?pageSize=10",
+            dataType:"json",
+            success:function (data) {
+                totalpage=data;
+            }
+        });
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/listReadMessages?page=1",
+            dataType:"json",
+            success:function(data){
+                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                $.each( data, function(index, content){
+                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                });
+                user=user+"</tbody></table>";
+                $("#right").empty();
+                $("#right").append(user);
+                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                var options = {
+                    bootstrapMajorVersion: 3, //版本
+                    currentPage:1, //当前页数
+                    totalPages: totalpage, //总页数
+                    itemTexts: function (type, page, current) {
+                        switch (type) {
+                            case "first":
+                                return "首页";
+                            case "prev":
+                                return "上一页";
+                            case "next":
+                                return "下一页";
+                            case "last":
+                                return "末页";
+                            case "page":
+                                return page;
+                        }
+                    },  onPageClicked: function (event, originalEvent, type, page) {
+                        $.ajax({
+                            type: "POST",
+                            url: "<%=basePath%>message/listReadMessages?page=" + page,
+                            dataType: "json",
+                            success: function (data) {
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                $.each( data, function(index, content){
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                });
+                                user = user + "</tbody></table> ";
+                                $("#right").html(user);
+                                load("messageSidebar", "#left");//同时加载左侧侧边栏
+                                $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
+                                var options = {
+                                    bootstrapMajorVersion: 3, //版本
+                                    currentPage: page, //当前页数
+                                    totalPages: totalpage, //总页数
+                                    itemTexts: function (type, page, current) {
+                                        switch (type) {
+                                            case "first":
+                                                return "首页";
+                                            case "prev":
+                                                return "上一页";
+                                            case "next":
+                                                return "下一页";
+                                            case "last":
+                                                return "末页";
+                                            case "page":
+                                                return page;
+                                        }
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                };
+                $('#paginationBlog').bootstrapPaginator(options);
+                $("#paginationBlog").show();
+            },
+            error: function (data) {
+                console.info("error: " + data.responseText);
+            }
+        });
+    }
+
+
+    //删除message
+    function deleteMessage(id) {
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/deleteMessage?id="+id,
+            dataType:"json",
+            success:function (data) {
+                if(data==1){
+                    alertify.success("删除成功");
+                    listAllMessages();
+                    checkUnread();//更新当前未读消息
+                }
+
+                else
+                    alertify.error("删除失败");
+            }
+        });
+    }
+
+    //查看message
+    function  getMessage(id) {
+        $.ajax({
+            type:"POST",
+            url:"<%=basePath%>message/getMessage?id="+id,
+            dataType:"json",
+            success:function (data) {
+                if(data.isread==0){
+                    updateMessageState(data.id);
+
+                    checkUnread();
+                }
+                $("#right").empty();
+                $("#paginationBlog").hide();
+                var html='<div class="col-md-10"><div class="col-md-12 text-center"><h4>留言人:'+data.name+'</h4></div><div class="col-md-12 text-center">邮箱:'+data.email+'<div class="col-md-12 text-center">留言时间：'+data.createtime+'<div class="col-md-12 text-center">内容'+data.content+'</div>';
+                $("#right").append(html);
+
+            }
+        });
+    }
+
+    //message只允许修改状态，即已读和未读
+    function updateMessageState(id) {
+        $.ajax({
+            type: "POST",
+            url: "<%=basePath%>message/updateMessageState?id=" + id,
+            dataType: "json",
+            success: function (data) {
+                if(data==1)
+                    alertify.success("已阅");
+            }
+        });
+    }
 
 </script>
 

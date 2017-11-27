@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>个人主页</title>
+    <title>lance的博客</title>
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Bodo - Simple One Page Personal" name="description">
@@ -134,7 +134,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h3 class="title-small-center text-center item-title" >
-                            <span><a href="#">Blog</a></span>
+                            <span><a href="<%=basePath%>blog/getSecond">Blog</a></span>
                         </h3>
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3">
@@ -145,108 +145,7 @@
                         </div>
                         <!--GRID BLOG-->
                         <div class="grid" id="blogs">
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog-1" class="img-circle text-center" src="<%=basePath%>images/blog-1.png">
-                                    <p class="subtitle fancy">
-                                        <span>09/01/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            Popular Design in 2015
-                                        </h3>
-                                    </a>
-                                    <p class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog-4" class="img-circle text-center" src="<%=basePath%>images/blog-4.jpg">
-                                    <p class="subtitle fancy">
-                                        <span>08/20/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            Just Start
-                                        </h3>
-                                    </a>
-                                    <div class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog6" class="img-circle text-center" src="<%=basePath%>images/blog-6.jpg">
-                                    <p class="subtitle fancy">
-                                        <span>08/11/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            The Huffington Post
-                                        </h3>
-                                    </a>
-                                    <p class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog2" class="img-circle text-center" src="<%=basePath%>images/blog-2.jpg">
-                                    <p class="subtitle fancy">
-                                        <span>08/03/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            Manuk!
-                                        </h3>
-                                    </a>
-                                    <p class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog5" class="img-circle text-center" src="<%=basePath%>images/blog-5.jpg">
-                                    <p class="subtitle fancy">
-                                        <span>07/26/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            Do Web Designer Really Need To Know UI/UX Design and Backend Code too?
-                                        </h3>
-                                    </a>
-                                    <p class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="grid-item">
-                                <div class="wrap-article">
-                                    <img alt="blog-3" class="img-circle text-center" src="<%=basePath%>images/blog-3.jpg">
-                                    <p class="subtitle fancy">
-                                        <span>08/03/2015</span>
-                                    </p>
-                                    <a href="#">
-                                        <h3 class="title">
-                                            Somewhere Place
-                                        </h3>
-                                    </a>
-                                    <p class="content-blog">
-                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.
-                                    </p>
-                                </div>
-                            </div>
-
+                             加载博客，默认加载前6条
                         </div>
                         <!--/.GRID BLOG END-->
                     </div>
@@ -290,61 +189,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                                <a class="lightbox" href="images/bridge.jpg">
-                                    <img src="<%=basePath%>images/bridge.jpg" alt="Bridge">
-                                </a>
-                                <div class="caption">
-                                    <h3>Thumbnail label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                                <a class="lightbox" href="images/tunnel.jpg">
-                                    <img src="<%=basePath%>images/tunnel.jpg" alt="Tunnel">
-                                </a>
-                                <div class="caption">
-                                    <h3>Thumbnail label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                                <a class="lightbox" href="images/coast.jpg">
-                                    <img src="<%=basePath%>images/coast.jpg" alt="Coast">
-                                </a>
-                                <div class="caption">
-                                    <h3>Thumbnail label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                                <a class="lightbox" href="images/rails.jpg">
-                                    <img src="<%=basePath%>images/rails.jpg" alt="Rails">
-                                </a>
-                                <div class="caption">
-                                    <h3>Thumbnail label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                                <a class="lightbox" href="images/traffic.jpg">
-                                    <img src="<%=basePath%>images/traffic.jpg" alt="Traffic">
-                                </a>
-                                <div class="caption">
-                                    <h3>Thumbnail label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                 </div>
@@ -369,18 +214,16 @@
 
                     </div>
                     <div class="col-md-9 content-right">
-                        <form>
                             <div class="group">
-                                <input required="" type="text"><span class="highlight"></span><span class="bar"></span><label>姓名(Name)</label>
+                                <input required="" type="text" id="messageName" placeholder="姓名（Name)">
                             </div>
                             <div class="group">
-                                <input required="" type="email"><span class="highlight"></span><span class="bar"></span><label>邮箱(Email)</label>
+                                <input required="" type="email" id="messageEmail" placeholder="邮箱(Email)">
                             </div>
                             <div class="group">
-                                <textarea required=""></textarea><span class="highlight"></span><span class="bar"></span><label>留言(Message)</label>
+                                <textarea required="" id="contentMessage" placeholder="留言(Message)"></textarea>
                             </div>
-                            <input id="sendMessage" name="sendMessage" type="submit" value="留言(Send Message)">
-                        </form>
+                            <button onclick="sendMessage()" id="messageBtn" class="btn btn-default pull-right btn-success" >留言(Send Message)</button>
                     </div>
                 </div>
             </div>
@@ -453,44 +296,6 @@
     </div><!-- /.modal -->
 </div>
 
-
-<!-- 博客显示模态框（Modal） -->
-<!--data-backdrop="static" data-keyboard="false"   点击空白和按esc键不退出-->
-<div class="modal"  style="width:100%"  id="blogModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
-    <div class="modal-dialog" style="width:80%;margin: 0 auto;" >
-        <div class="modal-content"  >
-            <div class="modal-header" >
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <div class="pull-left">
-                    <img src="<%=basePath%>images/blog-1.png" width="40px" class="img-circle"/>
-                </div>
-
-                <div  id="blogName" class="modal-title text-primary  text-center" >
-                    Blog
-                </div>
-
-            </div>
-            <div class="modal-body" >
-                <div class="col-md-12 text-center" id="detail" style="color: grey;font-size: 13px">
-                    <div id="author"  style="line-height: 13px;display: inline-block;">
-                        authorName
-                    </div>
-                    <div id="createTime" style="line-height: 13px;display: inline-block;">
-                        time
-                    </div>
-                    <div id="visitTimes" style="line-height: 13px;display: inline-block;">
-                        访问次数
-                    </div>
-                </div>
-                <div id="blogContent" >
-                        this is the concrete content
-                </div>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
 
 </body>
 <script type="text/javascript" src="<%=basePath%>js/baguetteBox.min.js"></script>
@@ -569,9 +374,8 @@
                     var date=content['date'].substring(0,10);//时间只显示日期
                     blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgname"]+'"> <p class="subtitle fancy"> <span>'+date+'</span> </p> <a href="<%=basePath%>blog/getBlog?id='+content["id"]+'";> <h3 class="title">'+content['blogname']+'</h3> </a> <div class="content-blog">'+content["blogcontent"]+'</div> </div> </div> </div>';
                 });
-
-
-                $("#blogs").html(blogContent);
+                $("#blogs").empty();
+                $("#blogs").append(blogContent);
             },
             error: function (data) {
                 console.info("error: " + data.responseText);
@@ -587,30 +391,42 @@
             type:"get",
             dataType:"html",
             success:function(msg){
-                $(locate).html(msg);
+                $(locate).empty();
+                $(locate).append(msg);
             }
+
         });
     }
 
+    function sendMessage() {
+        var data={
+            name:$("#messageName").val(),
+            email:$("#messageEmail").val(),
+            content:$("#contentMessage").val()
+        };
+        $.ajax({
+            url:"<%=basePath%>message/saveMessage",
+            async:true,
+            type:"POST",
+            dataType:"json",
+            data:data,
+            beforeSend: function () {
+                // 禁用按钮防止重复提交
+                $("#messageBtn").attr({ disabled: "disabled" });
+            },
+            success:function(data){
+               if(data==1)
+                   alertify.success("保存成功");
+               else if(data==-1)
+                   alertify.log("邮箱格式不正确");
+                else if(data==0)
+                   alertify.error("信息不完整");
+            },complete: function () {
+                $("#messageBtn").removeAttr("disabled");
+            },
 
-    <%--function findBlog(id) {--%>
-        <%--$.ajax({--%>
-            <%--type: "POST",--%>
-            <%--url: "<%=basePath%>blog/getBlogById?id="+id,--%>
-            <%--dataType: "json",--%>
-            <%--success: function (data) {--%>
-                <%--//alert(data["blogContent"]);--%>
-                <%--load("second","#index");--%>
-                <%--$("#blogName").text(data['blogname']);--%>
-                <%--$("#blogContent").html(data['blogcontent']);--%>
-                <%--$("#author").text("作者:"+data['author']);--%>
-                <%--$("#createTime").text("创建时间:"+data['date']);--%>
-                <%--$("#visitTimes").text("访问次数:"+data['visittime']);--%>
-                <%--$('#blogModal').modal('show');--%>
-                 <%--alert(data);--%>
-            <%--}--%>
-        <%--});--%>
-    <%--}--%>
+        });
+    }
     baguetteBox.run('.tz-gallery');
     //模态框消失后清空表单内容
     $(function () { $('#myModal').on('hide.bs.modal', function () {

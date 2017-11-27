@@ -45,12 +45,19 @@ public class BlogHandler extends GenericController {
 
 
 //    前台
-//    查询首页blog,按照先hot，后date降序排列
+
+//    查询首页blog,按照先hot，后date降序排列,默认查询6个
     @ResponseBody
     @RequestMapping(value="/getBlogForIndex",method = RequestMethod.POST)
     public List<Blogs> getBlogForIndex(){
-
        List<Blogs>list=blogService.getBlogForIndex(6);
+        return list;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/getBlogForSecond",method = RequestMethod.POST)
+    public List<Blogs> getBlogForSecond(){
+        List<Blogs>list=blogService.getBlogForIndex(1000);
         return list;
     }
     //查看对应blog
@@ -63,10 +70,13 @@ public class BlogHandler extends GenericController {
 
     @RequestMapping(value = "/getBlog",method=RequestMethod.GET)
     public String getBlog(@RequestParam Integer id){
-        return "second";
+        return "third";
     }
 
-
+    @RequestMapping(value = "getSecond",method=RequestMethod.GET)
+    public String getMore(){
+        return "second";
+    }
     /*
     *后台
      */
@@ -85,7 +95,8 @@ public class BlogHandler extends GenericController {
             }
         }
     }
-    //查询所有数据
+
+    //后台显示，查询所有数据**********（后续建议加上不同的用户只能管理自己的博客）
     @ResponseBody
     @RequestMapping(value = "/listAllBlogs",method = RequestMethod.POST)
     public List<Blogs>listAllBlogs(@RequestParam Integer page,Map<String,Object>map){
@@ -95,6 +106,7 @@ public class BlogHandler extends GenericController {
         return list;
     }
 
+    //计算页数
     @ResponseBody
     @RequestMapping(value = "getTotalPage",method = RequestMethod.POST)
     public Long getTotalPage(@RequestParam int pageSize){
@@ -111,13 +123,14 @@ public class BlogHandler extends GenericController {
     //增加博客
     @ResponseBody
     @RequestMapping(value = "/addBlog",method = RequestMethod.POST)
-    public int addBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot){
+    public int addBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot,String imgname){
 
         if(blogname.trim().equals("")||author.trim().equals("")||blogcontent.trim().equals(""))
              return 0;
         else {
             Blogs blogs=new Blogs(blogname,blogcontent,getNowDate(),author,hot);
-            blogs.setImgname("default ("+getRandomNum()+").jpg");//设置随机头像
+            blogs.setImgname(imgname);
+         //   blogs.setImgname("default ("+getRandomNum()+").jpg");//设置随机头像
             return blogService.insertBlog(blogs);
         }
 
@@ -132,10 +145,10 @@ public class BlogHandler extends GenericController {
         return blogService.deleteBlog(id);
     }
 
+    //更新博客
     @ResponseBody
     @RequestMapping(value = "updateBlog",method = RequestMethod.POST)
-    public int updateBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot,Map<String,Object>map){
-      //  System.out.println(blogname+author+"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    public int updateBlog(@RequestParam  String blogname,String author,String blogcontent,Integer hot,String imgname,Map<String,Object>map){
         //信息不全
         if(blogname.trim().equals("")||author.trim().equals("")||blogcontent.trim().equals(""))
             return 0;
@@ -146,14 +159,25 @@ public class BlogHandler extends GenericController {
             blogs.setBlogcontent(blogcontent);
             blogs.setDate(getNowDate());
             blogs.setHot(hot);
+            blogs.setImgname(imgname);
         return  blogService.updateBlog(blogs);
 
         }
 
     }
 
+//增加访问次数
+    @ResponseBody
+    @RequestMapping(value="addVisitTime",method = RequestMethod.POST)
+    public int addVisitTime(@RequestParam Integer id,Map<String,Object>map){
+        Blogs blogs= (Blogs) map.get("blog");
+        blogs.setVisittime(blogs.getVisittime()+1);
+        blogService.updateBlog(blogs);
+        return blogs.getVisittime();
+}
 
 
+    //图片上传
     @RequestMapping("imageUpload")
     public void imageUpload(HttpServletRequest request, HttpServletResponse response) {
         String DirectoryName = "/images/";
@@ -165,8 +189,6 @@ public class BlogHandler extends GenericController {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

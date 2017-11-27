@@ -57,8 +57,10 @@
                 <!--定义不拦截的路径-->
                 <property name="uncheckUrls">
                     <list>
-                        <value>/blog/blog/getBlog</value>
-                        <value>/blog/images/fate.ico</value>
+                        <value>/LanceBlog/blog/getBlog</value>
+                        <value>/LanceBlog/blog/getSecond</value>
+                        <value>/LanceBlog/images/fate.ico</value>
+                        <value>/LanceBlog/message/saveMessage</value>
 
                     </list>
                 </property>

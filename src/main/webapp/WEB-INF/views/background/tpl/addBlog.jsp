@@ -45,6 +45,20 @@
         <option value="1">置顶</option>
     </select>
 
+    <label for="imgname">默认头像</label>
+    <select class="form-control" id="imgname" name="imgname" onchange="changeImg(this.options[this.options.selectedIndex].value)">
+        <option value="default (1).jpg" selected="selected">1</option>
+        <option value="default (2).jpg">2</option>
+        <option value="default (3).jpg">3</option>
+        <option value="default (4).jpg">4</option>
+        <option value="default (5).jpg">5</option>
+        <option value="default (6).jpg">6</option>
+        <option value="default (7).jpg">7</option>
+        <option value="default (8).jpg">8</option>
+        <option value="default (9).jpg">9</option>
+        <option value="default (10).jpg">10</option>
+    </select>
+    <img src="<%=basePath%>images/default (1).jpg" id="img" class="img-circle" width="100px"/>
     <div class="form-group">
         <label for="blogcontent">文章内容</label>
         <textarea  name="opinion" rows="10" cols="38" class="ckeditor" id="blogcontent"></textarea>
@@ -63,6 +77,10 @@
 
 
 <script type="text/javascript">
+    function changeImg(v){
+        var path="<%=basePath%>images/"+v;
+        $("#img").attr('src',path);
+    };
     var editors=CKEDITOR.replace('blogcontent');
 
     //清空输入
@@ -71,6 +89,8 @@
         $("#blogContent").val("");
         $("#author").val("");
         $("#hot").val("0");
+        $("#imgname").val("default (1).jpg");
+        $("#img").attr(src,"<%=basePath%>images/default (1).jpg");
         CKEDITOR.instances.blogcontent.setData('');
 
     }
@@ -80,7 +100,8 @@
             'blogname':     $("#blogname").val(),
             'author':       $("#author").val(),
             'blogcontent':CKEDITOR.instances.blogcontent.getData(),
-            'hot':          $("#hot").val()
+            'hot':          $("#hot").val(),
+            'imgname':     $("#imgname").val()
         };
         $.ajax({
             type:"POST",
