@@ -157,6 +157,14 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="searchMessage" parameterType="com.lance.bean.Message" resultMap="BaseResultMap">
+    select *
+    from message
+    where name like "%"#{name,jdbcType=VARCHAR}"%" or content like "%"#{content,jdbcType=VARCHAR}"%" or email  like "%"#{email,jdbcType=VARCHAR}"%"
+    or createtime like "%"#{createtime,jdbcType=VARCHAR}"%"
+  </select>
+
+
   <select id="countReadByExample" parameterType="com.lance.bean.MessageExample" resultType="java.lang.Long">
     select count(*) from message where isread=1
     <if test="_parameter != null">

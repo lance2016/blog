@@ -1,7 +1,10 @@
 package com.lance.handler;
 
 import com.lance.bean.User;
+import com.lance.common.CodeController;
 import com.lance.common.GenericController;
+import com.lance.service.BlogService;
+import com.lance.service.MessageService;
 import com.lance.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +29,16 @@ public class UserHandler extends GenericController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    BlogService blogService;
+    @Autowired
+    MessageService messageService;
 
+    @RequestMapping(value = "code",method = RequestMethod.GET)
+    public void getCode(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        CodeController codeController=new CodeController();
+        codeController.getCode(request,response);
+    }
 
 
 //获取当前时间，用来记录登陆时间或者用户最近一次访问时间
@@ -37,25 +49,64 @@ public class UserHandler extends GenericController {
     }
 
 
+//注册
+    @ResponseBody
+    @RequestMapping(value = "register",method = RequestMethod.POST)
+    public int register(@RequestParam String username,String password,String password2,String code2,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        System.out.println(username+"  "+password+"  "+password2+"  "+code2);
+        String code= (String) session.getAttribute("code");
+        if(username.trim().equals("")||password.trim().equals("")||password2.trim().equals("")||code2.trim().equals(""))
+            return -2;//信息不完整
+        else if(!password.equals(password2)){
+            return -1;//两次密码不一致
+        }else if(!code2.equalsIgnoreCase(code)){
+            return 0;//验证码错误
+        }else{
+            User u=userService.getUserByUsername(username);
+            if(u!=null)
+                return 2;//用户已存在
+            else{
+                User user=new User(username,password,0,"佚名",getNowDate());
+                userService.addUser(user);
+                return 1;
+            }
+        }
+
+    }
+
 //登录，返回指定参数给ajax，若登陆成功，由ajax执行登录操作
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String checklogin(@RequestParam String username, String password, HttpServletRequest request) throws ServletException, IOException {
-        //判断参数非空或者在前台检验，现在先不写
+    public String checklogin(@RequestParam String username, String password,String code, HttpServletRequest request) throws ServletException, IOException {
         System.out.println("==========================login");
-        User u=userService.getUserByUsername(username);
-        if(u==null){
-            return "0";//没有该用户
-        }else{
-            if(u.getPassword().equals(password)){
-                HttpSession session = request.getSession();
-                session.setAttribute("account",u);
-                return "1";//成功登陆,前台跳转页面
+        if(username.trim().equals("")||password.trim().equals("")||code.trim().equals(""))
+            return "-2";//输入信息不全
+        //判断参数非空或者在前台检验，现在先不写
+        HttpSession session=request.getSession();
+        String code2= (String) session.getAttribute("code");
+        if(!code.equalsIgnoreCase(code2))
+            return "-1";//验证码错误
+        else{
+            User u=userService.getUserByUsername(username);
+            if(u==null){
+                return "-3";//没有该用户
+            }else{
+                if(u.getPassword().equals(password)){
+                    if(u.getAuthority()>0){
+                        session.setAttribute("account",u);
+                        return "1";//成功登陆,前台跳转页面
+                    }else
+                        return "-4";//没有权限
+
+                }
+
+                else
+                    return "0";//密码不正确
             }
 
-            else
-                return "0";//密码不正确
         }
+
 
     }
 
@@ -99,15 +150,7 @@ public class UserHandler extends GenericController {
     /*
     ** 增加用户
      */
-//
-//    //检查session
-//    public boolean checkSessionNull(HttpServletRequest request ){
-//        HttpSession session=request.getSession();
-//        if(session==null){
-//            return true;
-//        }
-//        return false;
-//    }
+
 
 
     //1.增加用户
@@ -177,6 +220,18 @@ public class UserHandler extends GenericController {
     }
 
 
+    //搜索框搜索user
+    @ResponseBody
+    @RequestMapping(value = "searchUser",method = RequestMethod.POST)
+    public List<User> searchUser(@RequestParam String criteria){
+        System.out.println(" ++++++++++++"+criteria);
+        User u=new User();
+        u.setUsername(criteria);
+        u.setNickname(criteria);
+        u.setVisittime(criteria);
+        return userService.searchUser(u);
+    }
+
 
     /*
     ** 删除用户
@@ -205,7 +260,6 @@ public class UserHandler extends GenericController {
 
         System.out.println("==========================updateUser");
         User u= (User) map.get("user");
-      //  System.out.println(u);
         u.setUsername(username);
         u.setNickname(nickname);
         userService.updateUser(u);

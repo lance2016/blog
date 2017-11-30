@@ -72,8 +72,8 @@
             var date=content['date'].substring(0,10);//时间只显示日期
             blogContent=blogContent+'<div class="grid-item"> <div class="wrap-article"> <img class="img-circle text-center" src="<%=basePath%>images/'+content["imgname"]+'"> <p class="subtitle fancy"> <span>'+date+'</span> </p> <a href="<%=basePath%>blog/getBlog?id='+content["id"]+'";> <h3 class="title">'+content['blogname']+'</h3> </a> <div class="content-blog">'+content["blogcontent"]+'</div> </div> </div> </div>';
         });
-
-         $("#blogs").html(blogContent);
+            $("#blogs").empty();
+         $("#blogs").append(blogContent);
         },
          error: function (data) {
               console.info("error: " + data.responseText);

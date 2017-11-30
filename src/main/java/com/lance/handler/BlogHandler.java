@@ -163,10 +163,25 @@ public class BlogHandler extends GenericController {
         return  blogService.updateBlog(blogs);
 
         }
-
     }
 
-//增加访问次数
+
+    //搜索框搜索user
+    @ResponseBody
+    @RequestMapping(value = "searchBlog",method = RequestMethod.POST)
+    public List<Blogs> searchUser(@RequestParam String criteria){
+        System.out.println(" ++++++++++++"+criteria);
+        Blogs b=new Blogs();
+        b.setBlogname(criteria);
+        b.setImgname(criteria);
+        b.setDate(criteria);
+        b.setBlogcontent(criteria);
+        b.setAuthor(criteria);
+        return blogService.searchBlog(b);
+    }
+
+
+    //增加访问次数
     @ResponseBody
     @RequestMapping(value="addVisitTime",method = RequestMethod.POST)
     public int addVisitTime(@RequestParam Integer id,Map<String,Object>map){

@@ -32,4 +32,6 @@ public interface BlogsMapper {
     int updateByPrimaryKeySelective(Blogs record);
 
     int updateByPrimaryKey(Blogs record);
+
+    List<Blogs>searchBlog(Blogs blogs);
 }

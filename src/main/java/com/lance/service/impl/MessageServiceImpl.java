@@ -87,4 +87,9 @@ public class MessageServiceImpl implements MessageService {
     public int updateMessage(Message message) {
         return messageMapper.updateByPrimaryKey(message);
     }
+
+    @Override
+    public List<Message> searchMessage(Message message) {
+        return messageMapper.searchMessage(message);
+    }
 }

@@ -16,7 +16,6 @@
     //切换active 侧边栏  因为有两个 ul.nav ，所以前面再加一个父类
     $(document).ready(function(){
         $('.page-sidebar ul.nav > li').click(function (e) {
-            //  e.preventDefault();
             $('.page-sidebar ul.nav > li').removeClass('active');
             $(this).addClass('active');
         });

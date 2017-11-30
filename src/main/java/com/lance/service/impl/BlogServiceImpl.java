@@ -64,4 +64,9 @@ public class BlogServiceImpl implements BlogService {
     public int updateBlog(Blogs blogs) {
         return blogsMapper.updateByPrimaryKey(blogs);
     }
+
+    @Override
+    public List<Blogs> searchBlog(Blogs blog) {
+        return blogsMapper.searchBlog(blog);
+    }
 }

@@ -20,4 +20,5 @@ public interface MessageService {
     public  List<Message>getMessageByEmail(String email);
     public int deleteMessage(Integer id);
     public int updateMessage(Message message);
+    public List<Message> searchMessage(Message message);
 }

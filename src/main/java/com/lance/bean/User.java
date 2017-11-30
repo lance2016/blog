@@ -74,6 +74,14 @@ public class User {
         this.visittime = visittime;
     }
 
+    public User(String username, String password, Integer authority, String nickname, String visittime) {
+        this.username = username;
+        this.password = password;
+        this.authority = authority;
+        this.nickname = nickname;
+        this.visittime = visittime;
+    }
+
     @Override
     public String toString() {
         return "User{" +

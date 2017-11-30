@@ -67,11 +67,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateByPrimaryKey(user);
     }
 
-
-
-
-
-
+    @Override
+    public List<User> searchUser(User user) {
+        return userMapper.searchUser(user);
+    }
 
 
 }

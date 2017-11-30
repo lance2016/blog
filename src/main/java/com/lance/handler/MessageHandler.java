@@ -43,6 +43,20 @@ public class MessageHandler {
         }
     }
 
+    //搜索框搜索Message
+    @ResponseBody
+    @RequestMapping(value = "searchMessage",method = RequestMethod.POST)
+    public List<Message> searchUser(@RequestParam String criteria){
+        System.out.println(" ++++++++++++"+criteria);
+        Message m=new Message();
+        m.setName(criteria);
+        m.setContent(criteria);
+        m.setCreatetime(criteria);
+        m.setEmail(criteria);
+        return messageService.searchMessage(m);
+    }
+
+
     //修改状态
     @ResponseBody
     @RequestMapping(value = "updateMessageState",method = RequestMethod.POST)

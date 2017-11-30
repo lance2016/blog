@@ -16,4 +16,5 @@ public interface BlogService {
     public List<Blogs> getBlogForIndex(int num);
     public Blogs getBlog(Integer id);
     public int updateBlog(Blogs blogs);
+    public List<Blogs>searchBlog(Blogs blog);//搜索框查询
 }

@@ -26,6 +26,7 @@
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="<%=basePath%>js/alertify.min.js" type="text/javascript"></script><!--alertify提醒-->
     <script type="text/javascript" src="<%=basePath%>js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="<%=basePath%>js/jquery.textSearch-1.0.js"></script>
     <style>
         .container{
             padding: 0px;
@@ -90,6 +91,7 @@
             type:"get",
             dataType:"html",
             success:function(msg){
+                $(locate).empty();
                 $(locate).html(msg);
             }
         });
@@ -115,7 +117,8 @@
                     user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['username']+"</td><td>"+content['nickname']+"</td><td>"+content["visittime"]+"</td><td><a href='#' onclick='deleteUser("+content['id']+")'>删除</a></td><td><a href='#' onclick='getUser("+content['id']+")'>修改</a> </td></tr>";
                 });
                 user=user+"</tbody></table></div>";
-                $("#right").html(user);
+                $("#right").empty();
+                $("#right").append(user);
                 load("userSidebar","#left");//同时加载左侧侧边栏
             },
             error: function (data) {
@@ -216,7 +219,8 @@
                         user=user+"<tr class="+state[index%4]+"><td>"+content['id']+"</td><td>"+content['blogname']+"</td><td>"+content['author']+"</td><td>"+content["date"]+"</td><td>"+content['hot']+"</td>"+"<td><a href='#' onclick='deleteBlog("+content['id']+")'>删除</a></td><td><a href='#' onclick='getBlog("+content['id']+")'>修改</a> </td></tr>";
                     });
                     user=user+"</tbody></table>";
-                    $("#right").html(user);
+                    $("#right").empty();
+                    $("#right").append(user);
                     load("blogSidebar", "#left");//同时加载左侧侧边栏
                     var options = {
                         bootstrapMajorVersion: 3, //版本
@@ -246,7 +250,8 @@
                                         user = user + "<tr class=" + state[index % 4] + "><td>" + content['id'] + "</td><td>" + content['blogname'] + "</td><td>" + content['author'] + "</td><td>" + content["date"] + "</td><td>" + content['hot'] + "</td>" + "<td><a href='#' onclick='deleteBlog(" + content['id'] + ")'>删除</a></td><td><a href='#' onclick='getBlog(" + content['id'] + ")'>修改</a> </td></tr>";
                                     });
                                     user = user + "</tbody></table> ";
-                                    $("#right").html(user);
+                                    $("#right").empty();
+                                    $("#right").append(user);
                                     load("blogSidebar", "#left");//同时加载左侧侧边栏
                                     $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                     var options = {
@@ -446,7 +451,8 @@
                                     user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
                                 });
                                 user = user + "</tbody></table> ";
-                                $("#right").html(user);
+                                $("#right").empty();
+                                $("#right").append(user);
                                 load("messageSidebar", "#left");//同时加载左侧侧边栏
                                 $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                 var options = {
@@ -539,7 +545,8 @@
                                     user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
                                 });
                                 user = user + "</tbody></table> ";
-                                $("#right").html(user);
+                                $("#right").empty();
+                                $("#right").append(user);
                                 load("messageSidebar", "#left");//同时加载左侧侧边栏
                                 $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                 var options = {
@@ -636,7 +643,8 @@
                                     user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
                                 });
                                 user = user + "</tbody></table> ";
-                                $("#right").html(user);
+                                $("#right").empty();
+                                $("#right").append(user);
                                 load("messageSidebar", "#left");//同时加载左侧侧边栏
                                 $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                 var options = {

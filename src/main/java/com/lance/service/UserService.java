@@ -14,4 +14,5 @@ public interface UserService {
     public int addUser(User user);
     public int deleteUserById(Integer id);
     public int updateUser(User user);
+    public List<User>searchUser(User user);
 }

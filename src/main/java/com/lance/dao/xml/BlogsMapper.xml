@@ -108,6 +108,13 @@
     from blogs
     where Id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="searchBlog" parameterType="com.lance.bean.Blogs" resultMap="BaseResultMap">
+    select *
+    from blogs
+    where blogname like "%"#{blogname,jdbcType=VARCHAR}"%" or blogcontent like "%"#{blogcontent,jdbcType=VARCHAR}"%" or blogs.date  like "%"#{date,jdbcType=VARCHAR}"%"
+    or author like "%"#{author,jdbcType=VARCHAR}"%"
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blogs
     where Id = #{id,jdbcType=INTEGER}

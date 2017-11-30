@@ -96,17 +96,11 @@
     from user
     where username = #{username,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
-    where Id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.lance.bean.UserExample">
-    delete from user
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-
+  <select id="searchUser" parameterType="com.lance.bean.User" resultMap="BaseResultMap">
+    select *
+    from user
+    where username like "%"#{username,jdbcType=VARCHAR}"%" or nickname like "%"#{nickname,jdbcType=VARCHAR}"%" or visittime like "%"#{visittime,jdbcType=VARCHAR}"%"
+  </select>
 
 
   <insert id="insert" parameterType="com.lance.bean.User">
