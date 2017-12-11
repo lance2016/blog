@@ -5,8 +5,8 @@
 %>
 <div class="page-sidebar" id="userSidebar" >
     <ul class="nav nav-pills nav-stacked">
-        <li id="listAllUsers" class="active"><a href="javascript:void(0)"  id="userLinkA" style="text-decoration: none"  onclick="listAllUsers()">显示所有用户</a></li>
-        <li  id="addUser"><a href="javascript:void(0)" style="text-decoration: none" id="userLinkB" onclick="load('addUser','#right')">增加用户</a></li>
+        <li id="listAllUsers" class="active"><a href="javascript:void(0)"  style="text-decoration: none"  onclick="listAllUsers()">显示所有用户</a></li>
+        <li  id="addUser"><a href="javascript:void(0)" style="text-decoration: none"  onclick="load('addUser','#right')">增加用户</a></li>
     </ul>
 
 </div>

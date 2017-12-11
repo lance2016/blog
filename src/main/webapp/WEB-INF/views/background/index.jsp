@@ -415,9 +415,9 @@
             url:"<%=basePath%>message/listAllMessages?page=1",
             dataType:"json",
             success:function(data){
-                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-2 text-center'>删除</th> </tr> </thead> <tbody>";
                 $.each( data, function(index, content){
-                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td><a href='javascript:void(0)' onclick='getMessage("+content['id']+")' >"+content['name']+"</a></td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td></tr>";
                 });
                 user=user+"</tbody></table>";
                 $("#right").empty();
@@ -446,9 +446,9 @@
                             url: "<%=basePath%>message/listAllMessages?page=" + page,
                             dataType: "json",
                             success: function (data) {
-                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th>  </tr> </thead> <tbody>";
                                 $.each( data, function(index, content){
-                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td><a href='javascript:void(0)' onclick='getMessage("+content['id']+")' >"+content['name']+"</a></td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td></tr>";
                                 });
                                 user = user + "</tbody></table> ";
                                 $("#right").empty();
@@ -494,7 +494,7 @@
         var color=new Array(2);
         color[0]='red',color[1]='green';
         state[0]="active"; state[1]="success"; state[2]="warning";state[3]="danger";
-        isread[0]='未读',isread[1]='已读'
+        isread[0]='未读',isread[1]='已读';
         var totalpage=0;
         $.ajax({
             type:"POST",
@@ -509,14 +509,18 @@
             url:"<%=basePath%>message/listUnreadMessages?page=1",
             dataType:"json",
             success:function(data){
-                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
-                $.each( data, function(index, content){
-                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
-                });
-                user=user+"</tbody></table>";
+                if(data=="")
+                    var user="<h3>暂无未读消息</h3>";
+                else {
+                    var user = "<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>标记已读</th> </tr> </thead> <tbody>";
+                    $.each(data, function (index, content) {
+                        user = user + "<tr class=" + state[index % 4] + "><td>" + "<span class='badge' style='background-color:" + color[content['isread']] + "'>" + isread[content['isread']] + "</span></td><td><a href='javascript:void(0)' onclick='getMessage(" + content['id'] + ")' >" + content['name'] + "</a></td><td>" + content['createtime'] + "</td><td>" + content["email"] + "</td><td><a href='#' onclick='deleteMessage(" + content['id'] + ")'>删除</a></td><td><a href='#' onclick='updateMessageState(" + content['id'] + ",2)'>已读</a>  </td></tr>";
+                    });
+                    user = user + "</tbody></table>";
+                }
                 $("#right").empty();
                 $("#right").append(user);
-                load("messageSidebar", "#left");//同时加载左侧侧边栏
+//                load("messageSidebar", "#left");//同时加载左侧侧边栏
                 var options = {
                     bootstrapMajorVersion: 3, //版本
                     currentPage:1, //当前页数
@@ -540,14 +544,14 @@
                             url: "<%=basePath%>message/listUnreadMessages?page=" + page,
                             dataType: "json",
                             success: function (data) {
-                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>标记已读</th> </tr> </thead> <tbody>";
                                 $.each( data, function(index, content){
-                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td><a href='javascript:void(0)' onclick='getMessage("+content['id']+")' >"+content['name']+"</a></td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='updateMessageState("+content['id']+",2)'>已读</a> </td></tr>";
                                 });
                                 user = user + "</tbody></table> ";
                                 $("#right").empty();
                                 $("#right").append(user);
-                                load("messageSidebar", "#left");//同时加载左侧侧边栏
+//                                load("messageSidebar", "#left");//同时加载左侧侧边栏
                                 $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                 var options = {
                                     bootstrapMajorVersion: 3, //版本
@@ -607,14 +611,19 @@
             url:"<%=basePath%>message/listReadMessages?page=1",
             dataType:"json",
             success:function(data){
-                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
-                $.each( data, function(index, content){
-                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
-                });
-                user=user+"</tbody></table>";
+                if(data=="")
+                    var user="<h3>暂无已读消息</h3>";
+                else{
+                    var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>标记未读</th> </tr> </thead> <tbody>";
+                    $.each( data, function(index, content){
+                        user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color:"+color[content['isread']]+"'>"+isread[content['isread']]+"</span></td><td><a href='javascript:void(0)' onclick='getMessage("+content['id']+")' >"+content['name']+"</a></td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='updateMessageState("+content['id']+",0)'>未读</a> </td></tr>";
+                    });
+                    user=user+"</tbody></table>";
+                }
+
                 $("#right").empty();
                 $("#right").append(user);
-                load("messageSidebar", "#left");//同时加载左侧侧边栏
+               // load("messageSidebar", "#left");//同时加载左侧侧边栏
                 var options = {
                     bootstrapMajorVersion: 3, //版本
                     currentPage:1, //当前页数
@@ -638,14 +647,14 @@
                             url: "<%=basePath%>message/listReadMessages?page=" + page,
                             dataType: "json",
                             success: function (data) {
-                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th> <th class='col-md-1 text-center'>查看</th> </tr> </thead> <tbody>";
+                                var user="<table class='table table-striped text-center' style='padding:50px'> <caption>所有留言</caption> <thead> <tr> <th class='col-md-2 text-center'>状态</th> <th class='col-md-2 text-center'>姓名</th> <th class='col-md-3 text-center'>时间</th> <th class='col-md-3 text-center'>邮箱</th> <th class='col-md-1 text-center'>删除</th><th>标记未读</th></tr> </thead> <tbody>";
                                 $.each( data, function(index, content){
-                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td>"+content['name']+"</td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='getMessage("+content['id']+")'>查看</a> </td></tr>";
+                                    user=user+"<tr class="+state[index%4]+"><td>"+ "<span class='badge' style='background-color: red'>"+isread[content['isread']]+"</span></td><td><a href='javascript:void(0)' onclick='getMessage("+content['id']+")' >"+content['name']+"</a></td><td>"+content['createtime']+"</td><td>"+content["email"]+"</td><td><a href='#' onclick='deleteMessage("+content['id']+")'>删除</a></td><td><a href='#' onclick='updateMessageState("+content['id']+",'unread'"+")'>未读</a></tr>";
                                 });
                                 user = user + "</tbody></table> ";
                                 $("#right").empty();
                                 $("#right").append(user);
-                                load("messageSidebar", "#left");//同时加载左侧侧边栏
+//                                load("messageSidebar", "#left");//同时加载左侧侧边栏
                                 $("#paginationBlog").show();  //在load方法里执行隐藏pagnationBlog的操作，只有需要分页的页面才调用显示
                                 var options = {
                                     bootstrapMajorVersion: 3, //版本
@@ -708,9 +717,7 @@
             dataType:"json",
             success:function (data) {
                 if(data.isread==0){
-                    updateMessageState(data.id);
-
-                    checkUnread();
+                    updateMessageState(data.id,1);
                 }
                 $("#right").empty();
                 $("#paginationBlog").hide();
@@ -720,16 +727,35 @@
             }
         });
     }
-
     //message只允许修改状态，即已读和未读
-    function updateMessageState(id) {
+    function updateMessageState(id,changeToState) {
+
+        //定义changeToState=0 标记为未读,=1时为查看未读消息，=2时为标记为已读，=3时为全部标记为已读
         $.ajax({
             type: "POST",
-            url: "<%=basePath%>message/updateMessageState?id=" + id,
+            url: "<%=basePath%>message/updateMessageState?id=" + id+"&state="+changeToState,
             dataType: "json",
             success: function (data) {
-                if(data==1)
-                    alertify.success("已阅");
+                if(data==1){
+                    var num=$("#messageNum").text();
+                    //如果是标记为已读
+                    if(changeToState==1){
+                        checkUnread();
+                        alertify.success("已阅");
+                    }else if(changeToState==0){
+                            checkUnread();
+                        alertify.success("标记为未读");
+                        listReadMessages();
+                    }
+
+                    else if(changeToState==2){
+                        checkUnread();
+                        alertify.success("标记为已读");
+                        listUnreadMessages();
+                    }
+
+                    checkUnread();
+                }
             }
         });
     }

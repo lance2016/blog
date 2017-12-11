@@ -60,10 +60,20 @@ public class MessageHandler {
     //修改状态
     @ResponseBody
     @RequestMapping(value = "updateMessageState",method = RequestMethod.POST)
-    public int updateMessageState(@RequestParam Integer id,Map<String,Object>map){
+    public int updateMessageState(@RequestParam Integer id,Integer state,Map<String,Object>map){
         Message message= (Message) map.get("message");
-        if(message.getIsread()==0)
-            message.setIsread(1);
+        System.out.println(id+state);
+        //修改成已读状态
+        if(state==1||state==2){
+            if(message.getIsread()==0)
+                message.setIsread(1);
+        }
+        //修改成未读状态
+        else if(state==0){
+            if(message.getIsread()==1)
+                message.setIsread(0);
+        }
+
         messageService.updateMessage(message);
         System.out.println(message+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return 1;

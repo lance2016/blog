@@ -347,7 +347,7 @@
                                         <div class="form-group help">
                                             <input type="password" class="form-control" id="password" placeholder="密　码">
                                             <i class="fa fa-lock"></i>
-                                            <a href="#" class="fa fa-eye"></a>
+                                            <a href="javascript:void(0)"  onmousedown='checkPassword()' onmouseup="backPassword()" class="fa fa-eye"></a>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="code" placeholder="验证码">
@@ -367,12 +367,12 @@
                             <i class="fa fa-user"></i>
                         </div>
                         <div class="form-group help">
-                            <input type="password" class="form-control" id="pwd" placeholder="密码">
+                            <input type="text" class="form-control" id="pwd" placeholder="密码" >
                             <i class="fa fa-lock"></i>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
                         <div class="form-group help">
-                            <input type="password" class="form-control" id="pwd2" placeholder="确认密码">
+                            <input type="text" class="form-control" id="pwd2" placeholder="确认密码">
                             <i class="fa fa-lock"></i>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
@@ -414,6 +414,13 @@
 
 <script>
 
+    function checkPassword(){
+        $("#password").attr("type","text");
+
+    }
+    function backPassword(){
+        $("#password").attr("type","password");
+    }
     //切换登录注册
     function changeState(state){
         changeImg();

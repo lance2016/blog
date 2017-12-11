@@ -6,15 +6,19 @@ import com.lance.common.GenericController;
 import com.lance.service.BlogService;
 import com.lance.service.MessageService;
 import com.lance.service.UserService;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -267,7 +271,58 @@ public class UserHandler extends GenericController {
     }
 
 
+    //单文件上传
+    @ResponseBody
+    @RequestMapping(value = "upload")
+    public String queryFileData(@RequestParam("uploadfile") CommonsMultipartFile file, HttpServletRequest request) {
+        // MultipartFile是对当前上传的文件的封装，当要同时上传多个文件时，可以给定多个MultipartFile参数(数组)
+        if (!file.isEmpty()) {
+            String type = file.getOriginalFilename().substring(
+                    file.getOriginalFilename().indexOf("."));// 取文件格式后缀名
+            String filename = System.currentTimeMillis() + type;// 取当前时间戳作为文件名
+            String path = request.getSession().getServletContext()
+                    .getRealPath("/uploadFiles/" + filename);// 存放位置
+            File destFile = new File(path);
+            try {
+                // FileUtils.copyInputStreamToFile()这个方法里对IO进行了自动操作，不需要额外的再去关闭IO流
+                FileUtils
+                        .copyInputStreamToFile(file.getInputStream(), destFile);// 复制临时文件到指定目录下
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "success";
+        } else {
+            return "failed";
+        }
+    }
 
+
+
+    //多文件上传
+    @ResponseBody
+    @RequestMapping(value = "/uploads")
+    public String queryFileDatas(@RequestParam("uploadfile") CommonsMultipartFile[] files, HttpServletRequest request) {
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                String type = files[i].getOriginalFilename().substring(
+                        files[i].getOriginalFilename().indexOf("."));// 取文件格式后缀名
+                String filename = System.currentTimeMillis() + type;// 取当前时间戳作为文件名
+                String path = request.getSession().getServletContext()
+                        .getRealPath("/upload/" + filename);// 存放位置
+                File destFile = new File(path);
+                try {
+                    FileUtils.copyInputStreamToFile(files[i].getInputStream(),
+                            destFile);// 复制临时文件到指定目录下
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "success";
+        } else {
+            return "false";
+        }
+
+    }
 
 }
 

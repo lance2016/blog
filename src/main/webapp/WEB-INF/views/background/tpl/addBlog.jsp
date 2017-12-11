@@ -12,18 +12,6 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-
-
-
-
-    <style>
-        .container{
-            padding: 0px;
-        }
-    </style>
-
-
-
 <form role="form" class="col-md-10 col-md-offset-1">
     <div class="form-group">
         <label for="blogname">标题</label>

@@ -5,8 +5,8 @@
 %>
 <div class="page-sidebar" >
     <ul class="nav nav-pills nav-stacked">
-        <li id="listAllBlogs" class="active"><a href="javascript:void(0)" id="blogLinkA" style="text-decoration: none"  onclick="listAllBlogs()">显示所有博客</a></li>
-        <li id="addBlog"><a href="javascript:void(0)"  id="blogLingB" style="text-decoration: none" onclick="load('addBlog','#right')">增加博客</a></li>
+        <li id="listAllBlogs" class="active"><a href="javascript:void(0)"  style="text-decoration: none"  onclick="listAllBlogs()">显示所有博客</a></li>
+        <li id="addBlog"><a href="javascript:void(0)"   style="text-decoration: none" onclick="load('addBlog','#right')">增加博客</a></li>
 
     </ul>
 

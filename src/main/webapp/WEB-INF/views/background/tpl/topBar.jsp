@@ -33,9 +33,9 @@
                         <li><a href="<%=basePath%>user/logout" style="text-decoration: none" >注销</a></li>
                         <li><a href="javascript:void(0);">切换用户</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:void(0);">分离的链接</a></li>
+                        <li><a href="javascript:void(0);" onclick="load('upload','#right')">上传文件</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:void(0);">另一个分离的链接</a></li>
+                        <li><a href="javascript:void(0);" onclick="load('download','#right')">下载文件</a></li>
                     </ul>
                 </li>
             </ul>
@@ -60,7 +60,6 @@
     $(document).ready(function () {
         checkUnread();
     });
-
     function search(){
         var realurl;
         var item=$("#searchItem").val();
@@ -161,7 +160,7 @@
                 if(data!=0)
                     $("#messageNum").text(data);
                 else
-                    $("#messageNum").text();
+                    $("#messageNum").text("");
             }
         });
     }
