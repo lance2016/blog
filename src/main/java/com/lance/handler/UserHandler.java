@@ -3,16 +3,19 @@ package com.lance.handler;
 import com.lance.bean.User;
 import com.lance.common.CodeController;
 import com.lance.common.GenericController;
-import com.lance.service.BlogService;
-import com.lance.service.MessageService;
 import com.lance.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +36,7 @@ public class UserHandler extends GenericController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    BlogService blogService;
-    @Autowired
-    MessageService messageService;
+
 
     @RequestMapping(value = "code",method = RequestMethod.GET)
     public void getCode(HttpServletRequest request,HttpServletResponse response) throws IOException {
@@ -53,7 +53,35 @@ public class UserHandler extends GenericController {
     }
 
 
-//注册
+    @RequestMapping(value = "/loginPage", method = RequestMethod.GET)
+    public String loginPage(@RequestParam(value = "error", required = false) String error) {
+        if (error != null) {
+            return "login";
+        }
+        return "login";
+    }
+    //权限不够跳转页面
+    @RequestMapping(value = "/403",method = RequestMethod.GET)
+    public ModelAndView accessDenied(@RequestParam(value = "error", required = false) String error){
+        if(error!=null){
+            System.out.println(error);
+        }
+        ModelAndView model = new ModelAndView();
+        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            model.addObject("username", userDetail.getUsername());
+        }
+        model.setViewName("403");
+        return model;
+    }
+    @RequestMapping(value = "/tests", method = RequestMethod.GET)
+    public String logintest() {
+
+        return "background/test";
+    }
+
+    //注册
     @ResponseBody
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public int register(@RequestParam String username,String password,String password2,String code2,HttpServletRequest request){
@@ -100,6 +128,7 @@ public class UserHandler extends GenericController {
                     if(u.getAuthority()>0){
                         session.setAttribute("account",u);
                         return "1";//成功登陆,前台跳转页面
+
                     }else
                         return "-4";//没有权限
 
@@ -114,12 +143,20 @@ public class UserHandler extends GenericController {
 
     }
 
+
+
     //用于验证后登录后台管理界面
     private static final String INDEX="index";
     @RequestMapping("/admin")
     public String gotobackground(){
         System.out.println("==========================gotobackground");
         return "background/index";
+    }
+
+    @RequestMapping("/test")
+    public String gotobaeckground(){
+        System.out.println("==========================gotobackground");
+        return "background/test";
     }
 
 

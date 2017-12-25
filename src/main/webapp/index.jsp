@@ -87,10 +87,15 @@
                 <a data-scroll="" href="#contact">
                     <span>Contact</span>
                 </a>
-                <a data-scroll="" href="<%=basePath%>user/admin">
+                <a  href="<%=basePath%>user/admin">
                     <span>Background</span>
                 </a>
-
+                <a  href="javascript:void(0);" data-toggle="modal"  data-target="#myModal" style="color:cornflowerblue;text-decoration: none;">
+                    <span>login</span>
+                </a>
+                <a  href="<%=basePath%>logout" >
+                    <span>logout</span>
+                </a>
 
             </div>
         </nav>
