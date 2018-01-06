@@ -4,12 +4,17 @@ import com.lance.bean.User;
 import com.lance.common.CodeController;
 import com.lance.common.GenericController;
 import com.lance.service.UserService;
+import com.lance.service.UsersService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -36,7 +41,12 @@ public class UserHandler extends GenericController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
+    @Qualifier("myUserServiceImpl")
+    @Autowired
+    private UsersService usersService;
 
     @RequestMapping(value = "code",method = RequestMethod.GET)
     public void getCode(HttpServletRequest request,HttpServletResponse response) throws IOException {
@@ -117,26 +127,23 @@ public class UserHandler extends GenericController {
         //判断参数非空或者在前台检验，现在先不写
         HttpSession session=request.getSession();
         String code2= (String) session.getAttribute("code");
+        //验证码不区分大小写
         if(!code.equalsIgnoreCase(code2))
             return "-1";//验证码错误
         else{
-            User u=userService.getUserByUsername(username);
-            if(u==null){
-                return "-3";//没有该用户
-            }else{
-                if(u.getPassword().equals(password)){
-                    if(u.getAuthority()>0){
-                        session.setAttribute("account",u);
-                        return "1";//成功登陆,前台跳转页面
-
-                    }else
-                        return "-4";//没有权限
-
-                }
-
-                else
-                    return "0";//密码不正确
-            }
+               UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+            try {
+                Authentication authentication = authenticationManager.authenticate(authRequest);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext()); // 这个非常重要，否则验证后将无法登陆
+            } catch (AuthenticationException ex) {
+                System.out.println("用户名或密码错误+id10086");
+                return "0";
+            }//end catch
+            User user=userService.getUserByUsername(username);
+            System.out.println(user+"现在的user");
+            session.setAttribute("account",user);
+            return "1";
 
         }
 

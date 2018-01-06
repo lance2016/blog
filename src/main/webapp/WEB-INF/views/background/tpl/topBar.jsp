@@ -30,7 +30,7 @@
                         设置 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="<%=basePath%>user/logout" style="text-decoration: none" >注销</a></li>
+                        <li><a href="<%=basePath%>logout" style="text-decoration: none" >注销</a></li>
                         <li><a href="javascript:void(0);">切换用户</a></li>
                         <li class="divider"></li>
                         <li><a href="javascript:void(0);" onclick="load('upload','#right')">上传文件</a></li>

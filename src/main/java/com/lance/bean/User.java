@@ -10,6 +10,7 @@ public class User {
     private Integer authority;
 
     private String nickname;
+
     private String visittime;
 
     public Integer getId() {

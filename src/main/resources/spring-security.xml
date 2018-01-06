@@ -25,29 +25,37 @@
             <!--permitAll这一条必须放在最后面，如果放在前面，则所有的都不拦截了，不知道为什么，可能和实现原理有关系-->
 
         <form-login login-page="/user/loginPage"
-                    login-processing-url="/login"
+                    login-processing-url="user/login"
                     always-use-default-target="true"
                     default-target-url="/"
 
                     authentication-failure-url="/user/loginPage?error=error" />
         <logout logout-url="/logout" logout-success-url="/user/loginPage?logout=logout" invalidate-session="true"/>
-        <remember-me key="authorition"/>
+        <remember-me key="authorition" user-service-ref="myUserServiceImpl"/>
         <access-denied-handler error-page="/user/403?error=authority"/>
         <csrf disabled="true"/>
     </http>
 
 
+    <!--<authentication-manager alias="authenticationManager">-->
+        <!--<authentication-provider>-->
+            <!--<password-encoder hash="md5" />-->
+            <!--<jdbc-user-service data-source-ref="dataSource"-->
+                               <!--users-by-username-query="select username,password, enabled from users where username=?"-->
+                               <!--authorities-by-username-query="select   username, role from user_roles where username=?"-->
+
+            <!--/>-->
+
+        <!--</authentication-provider>-->
+    <!--</authentication-manager>-->
+
+    <bean:bean id="MyUserService" class="com.lance.service.impl.MyUserServiceImpl"/>
     <authentication-manager alias="authenticationManager">
-        <authentication-provider>
+        <authentication-provider user-service-ref="MyUserService">
             <password-encoder hash="md5" />
-            <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="select username,password, enabled from users where username=?"
-                               authorities-by-username-query="select   username, role from user_roles where username=?"
-
-            />
-
         </authentication-provider>
     </authentication-manager>
+
 
 
 </bean:beans>

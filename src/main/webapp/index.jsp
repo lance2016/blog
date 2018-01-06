@@ -419,13 +419,7 @@
 
 <script>
 
-    function checkPassword(){
-        $("#password").attr("type","text");
 
-    }
-    function backPassword(){
-        $("#password").attr("type","password");
-    }
     //切换登录注册
     function changeState(state){
         changeImg();
